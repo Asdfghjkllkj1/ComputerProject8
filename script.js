@@ -8,6 +8,7 @@ window.onload = function() {
      * @param {list} scene_data    A list of objects for each object to be displayed
      * @param {dict} action_point  A dict of action points and their bounding boxes
      */
+
     class Room {
         constructor(name, scene_data, action_points) {
                 this.name = name;
@@ -19,10 +20,11 @@ window.onload = function() {
                 The value is a callback function (that may change loaded_room to another room object). */
             }
             /**
-             * @description Displays the corresponding scene of the room
+             * @description Displays the corresponding scene of the room; Removes all objects already on the room
              * @function display
              */
         display() {
+                removeAll();
                 load_scene(this.scene_data);
             }
             /**
@@ -167,73 +169,16 @@ window.onload = function() {
     //GLOBAL VARIABLES
     var WIDTH = getWidth();
     var HEIGHT = getHeight();
+    var USER_NAME;
     //GAME SETUP
     //TODO: set up room objects for all rooms in game
-    var testing_scene_room = new Room('testroom1', [{
-            type: "web_image",
-            location: [0, 0],
-            url: "https://codehs.com/uploads/c5d46e2a7c05e086977d597da91b4fc3",
-            set_size: [WIDTH, HEIGHT]
-        },
-        {
-            type: "rectangle",
-            location: [10, 30],
-            color: Color.green,
-            dim: [120, 20]
-        },
-        {
-            type: "circle",
-            location: [50, 200],
-            color: Color.blue,
-            radius: 40
-        },
-        {
-            type: "text",
-            location: [200, 50],
-            color: Color.white,
-            text: "TESTING",
-            font: "30pt Consolas"
-        },
-        {
-            type: "line",
-            location: [10, 20, 150, 240],
-            line_width: 10,
-            color: Color.red
-        },
-        {
-            type: "arc",
-            location: [WIDTH / 2 - 100, HEIGHT / 2 + 100],
-            radius: 40,
-            arc_angles: [90, 0],
-            color: Color.yellow
-        },
-        {
-            type: "oval",
-            location: [200, 350],
-            dim: [100, 200],
-            color: Color.purple
-        },
-        {
-            type: "not included; testing"
-        },
-        {
-            testing: "for testing"
-        }
-    ], { '[0,0,250,250]': 'loaded_room=another_testing_room' });
-    var another_testing_room = new Room('testroom2', [{
-        type: 'web_image',
-        location: [0, 0],
-        set_size: [WIDTH, HEIGHT],
-        url: 'https://codehs.com/uploads/a58c625aec504992e321894f63e72b35'
-    }], {
-        '[0,0,100,400]': 'loaded_room=start_room'
-    });
     var loaded_room;
+    var loaded_overlay;
     var start_room = new Room('start_room', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/67b3fe870835f1df7d063cd6d9a1f654'
-    }], { '[75,144,255,255]': 'loaded_room=level_select' });
+    }], { '[75,144,255,255]': 'USER_NAME=prompt("What is your name?","User000");loaded_room=level_select' });
     var level_select = new Room('level_select', [{
         type: 'web_image',
         location: [0, 0],
@@ -321,6 +266,7 @@ window.onload = function() {
         loaded_room.update([e.getX(), e.getY()]);
         changeHTML('current_doc', loaded_room.name); // debug purposes, displays room name in h2
         loaded_room.display();
+        changeHTML('username', USER_NAME);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', e.getX() + ', ' + e.getY()); // displays mouse current pos in h3
