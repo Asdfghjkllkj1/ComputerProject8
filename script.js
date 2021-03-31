@@ -32,10 +32,11 @@ window.onload = function() {
              */
         update(pos) {
             for (var action_bound in this.action_points) {
+                /*
                 var action_bound = action_bound.split(',').map(function(item) {
                     return parseInt(item, 10);
-                });
-                if (check_bound(action_bound, pos) == true) {
+                });*/
+                if (check_bound(eval(action_bound), pos) == true) {
                     eval(this.action_points[action_bound]);
                 }
             };
@@ -218,34 +219,34 @@ window.onload = function() {
         {
             testing: "for testing"
         }
-    ], { '0,0,250,250': 'loaded_room=another_testing_room' });
+    ], { '[0,0,250,250]': 'loaded_room=another_testing_room' });
     var another_testing_room = new Room('testroom2', [{
         type: 'web_image',
         location: [0, 0],
         set_size: [WIDTH, HEIGHT],
         url: 'https://codehs.com/uploads/a58c625aec504992e321894f63e72b35'
     }], {
-        '0,0,100,400': 'loaded_room=start_room'
+        '[0,0,100,400]': 'loaded_room=start_room'
     });
     var loaded_room;
     var start_room = new Room('start_room', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/67b3fe870835f1df7d063cd6d9a1f654'
-    }], { '75,144,255,255': 'loaded_room=level_select' });
+    }], { '[75,144,255,255]': 'loaded_room=level_select' });
     var level_select = new Room('level_select', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/17a255ac46fcbe31d6789d986d98af8c'
     }], {
-        '10,100,75,165': 'loaded_room=L1e;',
-        '90,100,160,165': 'loaded_room=L2e;',
-        '175,100,240,170': 'loaded_room=L3e;',
-        '250,100,320,170': 'loaded_room=L4e;',
-        '5,190,95,260': 'loaded_room=L5e;',
-        '90,190,165,260': 'loaded_room=L6e;',
-        '180,190,235,270': 'loaded_room=L7e;',
-        '250,200,325,260': 'loaded_room=L8e;'
+        '[10,100,75,165]': 'loaded_room=L1e;',
+        '[90,100,160,165]': 'loaded_room=L2e;',
+        '[175,100,240,170]': 'loaded_room=L3e;',
+        '[250,100,320,170]': 'loaded_room=L4e;',
+        '[5,190,95,260]': 'loaded_room=L5e;',
+        '[90,190,165,260]': 'loaded_room=L6e;',
+        '[180,190,235,270]': 'loaded_room=L7e;',
+        '[250,200,325,260]': 'loaded_room=L8e;'
     });
     /* 
     template for rooms with only url
@@ -253,63 +254,63 @@ window.onload = function() {
         type: 'web_image',
         location: [0,0],
         url: '__url__'
-    }], {'__coords__':'__callback__'});
+    }], {'[__coords__]':'__callback__'});
     */
     var L1e = new Room('Lv1_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/bef060442d7fb97e5775a3b5e953926c'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L2e = new Room('Lv2_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/c75b69cd74f41b1c690b981edd438771'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L3e = new Room('Lv3_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/8a0ff0269c38c322e4dd54928a37e1e8'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L4e = new Room('Lv4_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/3f668e244b2c250c27b96f41d8494c07'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L5e = new Room('Lv5_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/423a283535121945fcdc926c85febd0e'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L6e = new Room('Lv6_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/3ce76bc733da05177532fbd004dd250d'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L7e = new Room('Lv7_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/fe193d750c155a8d367b45ee5537b916'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     var L8e = new Room('Lv8_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/779ee02bf2672c86766750985b3db283'
     }], {
-        '0,0,400,500': 'loaded_room=start_room;'
+        '[0,0,400,500]': 'loaded_room=start_room;'
     });
     loaded_room = start_room;
     //MAIN LOOP
@@ -326,7 +327,6 @@ window.onload = function() {
     }); // mouse pos display; mainly for debug
     //HTML Integration
     if (typeof start === 'function') {
-        // Also code to integrate with HTML
         start();
     }
 };
