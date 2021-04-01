@@ -32,7 +32,7 @@ window.onload = function() {
             }
             /**
              * @description Checks if a position hits an action point
-             * @function
+             * @function update
              * @param {list[2]} pos A position (usually of mouse) to check whether it hits action points or not
              */
         update(pos) {
