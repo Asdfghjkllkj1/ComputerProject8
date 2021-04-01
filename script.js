@@ -22,9 +22,12 @@ window.onload = function() {
             /**
              * @description Displays the corresponding scene of the room; Removes all objects already on the room
              * @function display
+             * @param {bool} overlay  If the room is being displayed as an overlay to something else
              */
-        display() {
-                removeAll();
+        display(overlay = false) {
+                if (!overlay) {
+                    removeAll();
+                }
                 load_scene(this.scene_data);
             }
             /**
@@ -258,15 +261,23 @@ window.onload = function() {
         '[0,0,400,500]': 'loaded_room=start_room;'
     });
     loaded_room = start_room;
+    loaded_overlay = new Room('test_overlay', [{
+        type: 'rectangle',
+        location: [250, 100],
+        dim: [100, 300],
+        color: Color.green
+    }]);
     //MAIN LOOP
     loaded_room.display(); // just to display it the first time
+    loaded_overlay.display(overlay = true); // first-time display of overlay
     document.getElementById('current_doc').innerHTML = loaded_room.name;
     mouseClickMethod(function(e) {
         // optional: add code that runs every time a click (not necessarily one to do something) happens
         loaded_room.update([e.getX(), e.getY()]);
         changeHTML('current_doc', loaded_room.name); // debug purposes, displays room name in h2
+        changeHTML('username', USER_NAME); // debug purposes, displays username
         loaded_room.display();
-        changeHTML('username', USER_NAME);
+        loaded_overlay.display(overlay = true);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', e.getX() + ', ' + e.getY()); // displays mouse current pos in h3
