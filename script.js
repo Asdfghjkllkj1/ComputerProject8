@@ -197,12 +197,7 @@ window.onload = function() {
         '[90,190,165,260]': 'loaded_room=L6e;',
         '[180,190,235,270]': 'loaded_room=L7e;',
         '[250,200,325,260]': 'loaded_room=L8e;'
-    }, new Room('level_overlay', [{
-        type: 'rectangle',
-        location: [100, 100],
-        color: Color.green,
-        dim: [50, 50]
-    }]));
+    }, new Room('level_overlay'));
     /* 
     template for rooms with only url
     new Room('__name__', [{
@@ -280,7 +275,7 @@ window.onload = function() {
         loaded_room.linked_overlay.display(overlay = true);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
-        changeHTML('mouse_pos', e.getX() + ', ' + e.getY()); // displays mouse current pos in h3
+        changeHTML(`mouse pos: ${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
     }); // mouse pos display; mainly for debug
     //HTML Integration
     if (typeof start === 'function') {
