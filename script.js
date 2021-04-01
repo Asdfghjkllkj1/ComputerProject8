@@ -4,13 +4,19 @@ window.onload = function() {
     /**
      * @description A general container for room objects
      * @class Room
-     * @param {string} name        A name to be displayed for debug/user interfacing purposes
-     * @param {list} scene_data    A list of objects for each object to be displayed
-     * @param {dict} action_point  A dict of action points and their bounding boxes
+     * @param {string} name          A name to be displayed for debug/user interfacing purposes
+     * @param {list} scene_data      A list of objects for each object to be displayed
+     * @param {dict} action_point    A dict of action points and their bounding boxes
+     * @param {Room} linked_overlay  A Room object to be displayed with the room
      */
 
     class Room {
-        constructor(name, scene_data, action_points) {
+        constructor(name = 'Room Object', scene_data = [{
+                type: 'web_image',
+                location: [0, 0],
+                url: 'https://codehs.com/uploads/978cbcc781e32db59711ed28ad170591',
+                set_size: [100, 100]
+            }], action_points = {}, linked_overlay) {
                 this.name = name;
                 // the name of the room, for displaying to the user/debugging
                 this.scene_data = scene_data;
@@ -18,6 +24,10 @@ window.onload = function() {
                 this.action_points = action_points;
                 /* action_points is a dict with keys being lists of 4 coordinates as a bounding box where actions happen.
                 The value is a callback function (that may change loaded_room to another room object). */
+                if (linked_overlay != undefined) {
+                    this.linked_overlay = linked_overlay;
+                }
+                // for linking room data to overlays to be displayed with the room
             }
             /**
              * @description Displays the corresponding scene of the room; Removes all objects already on the room
@@ -35,18 +45,11 @@ window.onload = function() {
              * @function update
              * @param {list[2]} pos A position (usually of mouse) to check whether it hits action points or not
              */
-        update(pos) {
+        update = pos => {
             for (var action_bound in this.action_points) {
-                /*
-                var action_bound = action_bound.split(',').map(function(item) {
-                    return parseInt(item, 10);
-                });*/
-                if (check_bound(eval(action_bound), pos) == true) {
-                    eval(this.action_points[action_bound]);
-                }
-            };
-        }
-
+                if (check_bound(eval(action_bound), pos) == true) { eval(this.action_points[action_bound]) }
+            }
+        };
     }
 
     //FUNCTIONS
@@ -176,7 +179,6 @@ window.onload = function() {
     //GAME SETUP
     //TODO: set up room objects for all rooms in game
     var loaded_room;
-    var loaded_overlay;
     var start_room = new Room('start_room', [{
         type: 'web_image',
         location: [0, 0],
@@ -195,7 +197,12 @@ window.onload = function() {
         '[90,190,165,260]': 'loaded_room=L6e;',
         '[180,190,235,270]': 'loaded_room=L7e;',
         '[250,200,325,260]': 'loaded_room=L8e;'
-    });
+    }, new Room('level_overlay', [{
+        type: 'rectangle',
+        location: [100, 100],
+        color: Color.green,
+        dim: [50, 50]
+    }]));
     /* 
     template for rooms with only url
     new Room('__name__', [{
@@ -261,15 +268,8 @@ window.onload = function() {
         '[0,0,400,500]': 'loaded_room=start_room;'
     });
     loaded_room = start_room;
-    loaded_overlay = new Room('test_overlay', [{
-        type: 'rectangle',
-        location: [250, 100],
-        dim: [100, 300],
-        color: Color.green
-    }]);
     //MAIN LOOP
     loaded_room.display(); // just to display it the first time
-    loaded_overlay.display(overlay = true); // first-time display of overlay
     document.getElementById('current_doc').innerHTML = loaded_room.name;
     mouseClickMethod(function(e) {
         // optional: add code that runs every time a click (not necessarily one to do something) happens
@@ -277,7 +277,7 @@ window.onload = function() {
         changeHTML('current_doc', loaded_room.name); // debug purposes, displays room name in h2
         changeHTML('username', USER_NAME); // debug purposes, displays username
         loaded_room.display();
-        loaded_overlay.display(overlay = true);
+        loaded_room.linked_overlay.display(overlay = true);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', e.getX() + ', ' + e.getY()); // displays mouse current pos in h3
