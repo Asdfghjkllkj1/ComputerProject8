@@ -258,6 +258,12 @@ window.onload = function() {
         document.getElementById(id).innerHTML = new_text;
     }
 
+    function changeLevel(new_level) {
+        LLevel = eval(new_level);
+        LLevel.pos = [0, 0];
+        LLevel.update();
+    }
+
     //GLOBAL VARIABLES
     const WIDTH = getWidth();
     const HEIGHT = getHeight();
@@ -278,13 +284,13 @@ window.onload = function() {
         url: 'https://codehs.com/uploads/17a255ac46fcbe31d6789d986d98af8c'
     }], {
         '[10,100,75,165]': 'LLevel = Level1; LLevel.pos = [0,0];LLevel.update();',
-        '[90,100,160,165]': 'LLevel.loaded_room=L2e;',
-        '[175,100,240,170]': 'LLevel.loaded_room=L3e;',
-        '[250,100,320,170]': 'LLevel.loaded_room=L4e;',
-        '[5,190,95,260]': 'LLevel.loaded_room=L5e;',
-        '[90,190,165,260]': 'LLevel.loaded_room=L6e;',
-        '[180,190,235,270]': 'LLevel.loaded_room=L7e;',
-        '[250,200,325,260]': 'LLevel.loaded_room=L8e;'
+        '[90,100,160,165]': 'LLevel = Level2; LLevel.pos = [0,0];LLevel.update();',
+        '[175,100,240,170]': 'LLevel = Level3; LLevel.pos = [0,0];LLevel.update();',
+        '[250,100,320,170]': 'LLevel = Level4; LLevel.pos = [0,0];LLevel.update();',
+        '[5,190,95,260]': 'LLevel = Level5; LLevel.pos = [0,0];LLevel.update();',
+        '[90,190,165,260]': 'LLevel = Level6; LLevel.pos = [0,0];LLevel.update();',
+        '[180,190,235,270]': 'LLevel = Level7; LLevel.pos = [0,0];LLevel.update();',
+        '[250,200,325,260]': 'LLevel = Level8; LLevel.pos = [0,0];LLevel.update();'
     }, new Room('level_overlay'));
     const LevelStart = new Level('LStart', new Grid([1, 2], [
         [start_room, level_select]
@@ -312,29 +318,41 @@ window.onload = function() {
         location: [0, 0],
         url: 'https://codehs.com/uploads/c75b69cd74f41b1c690b981edd438771'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level2 = new Level('L2', new Grid([1, 1], [
+        [L2e]
+    ]), pos = [0, 0]);
     var L3e = new Room('Lv3_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/8a0ff0269c38c322e4dd54928a37e1e8'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level3 = new Level('L3', new Grid([1, 1], [
+        [L3e]
+    ]), pos = [0, 0]);
     var L4e = new Room('Lv4_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/3f668e244b2c250c27b96f41d8494c07'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level4 = new Level('L4', new Grid([1, 1], [
+        [L4e]
+    ]), pos = [0, 0]);
     var L5e = new Room('Lv5_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/423a283535121945fcdc926c85febd0e'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level5 = new Level('L5', new Grid([1, 1], [
+        [L5e]
+    ]), pos = [0, 0]);
     var L6e = new Room('Lv6_entrance', [{
         type: 'web_image',
         location: [0, 0],
@@ -342,20 +360,29 @@ window.onload = function() {
     }], {
         '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
     });
+    const Level6 = new Level('L6', new Grid([1, 1], [
+        [L6e]
+    ]), pos = [0, 0]);
     var L7e = new Room('Lv7_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/fe193d750c155a8d367b45ee5537b916'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level7 = new Level('L7', new Grid([1, 1], [
+        [L7e]
+    ]), pos = [0, 0]);
     var L8e = new Room('Lv8_entrance', [{
         type: 'web_image',
         location: [0, 0],
         url: 'https://codehs.com/uploads/779ee02bf2672c86766750985b3db283'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
+    const Level8 = new Level('L8', new Grid([1, 1], [
+        [L8e]
+    ]), pos = [0, 0]);
     LLevel = LevelStart;
     //MAIN LOOP
     LLevel.update()
@@ -367,6 +394,7 @@ window.onload = function() {
         document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
         changeHTML('text', LLevel.name);
         changeHTML('text2', LLevel.pos);
+        changeHTML('username', USER_NAME);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
