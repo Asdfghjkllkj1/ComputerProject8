@@ -107,8 +107,8 @@ window.onload = function() {
     /**
      * @description  A container for linking Room objects
      * @class Level
-     * @param {string} name          The name for the entire level
-     * @param {Grid} rooms           A grid (2D array) of Room objects
+     * @param {string} name  The name for the entire level
+     * @param {Grid} rooms   A grid (2D array) of Room objects
      * @param {list[2]} pos  The position of the player (and the position of the room to display)
      */
     class Level {
@@ -358,7 +358,7 @@ window.onload = function() {
         location: [0, 0],
         url: 'https://codehs.com/uploads/3ce76bc733da05177532fbd004dd250d'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel.loaded_room=start_room;'
+        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
     });
     const Level6 = new Level('L6', new Grid([1, 1], [
         [L6e]
