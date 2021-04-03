@@ -64,7 +64,7 @@ window.onload = function() {
         constructor(name = 'Room Object', scene_data = [{
                 type: 'web_image',
                 location: [50, 50],
-                url: 'https://codehs.com/uploads/978cbcc781e32db59711ed28ad170591',
+                url: 'https://store8.gofile.io/download/eXG4Pv/d86c0ab1b0ece084997f46464313d3b7/not_found.png',
                 set_size: [100, 100]
             }], action_points = {}, linked_overlay) {
                 this.name = name;
@@ -127,14 +127,13 @@ window.onload = function() {
                 // room loaded associated with the level
             }
             /**
-             * @description  A function that updates the scene based on coordinates and moves the position of the loaded scene based on dx/dy
+             * @description  A function that updates the scene based on coordinates and moves the loaded position to new_x, new_y
              * @function update
-             * @param {int} dx  Move x by dx amount
-             * @param {int} dy  Move y by dy amount
+             * @param {int} new_x  New x position to go to
+             * @param {int} new_y  New y position to go to
              */
-        update(dx = 0, dy = 0) {
-            var new_pos = [this.pos[0] + dy, this.pos[1] + dx];
-            if (this.rooms.inBound(new_pos)) this.pos = new_pos;
+        update(new_x = 0, new_y = 0) {
+            if (this.rooms.inBound([new_y, new_x])) this.pos = [new_y, new_x];
             this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
         }
     }
@@ -274,26 +273,70 @@ window.onload = function() {
     //TODO: set up room objects for all rooms in game
     //To Do: Change the need for "LLevel = __level-name__"; LLevel.pos = [0,0]; LLevel.update();" in action points for rooms
     const start_room = new Room('start_room', [{
-        type: 'web_image',
-        location: [0, 0],
-        url: 'https://codehs.com/uploads/67b3fe870835f1df7d063cd6d9a1f654'
-    }], { '[75,144,255,255]': 'USER_NAME=prompt("What is your name?","User000");LLevel.update(1,0)' });
+            type: 'web_image',
+            location: [0, 0],
+            url: 'http://dl.dropboxusercontent.com/s/2e7xzs8umr1ya6n/start_room.png'
+        },
+        {
+            type: 'text',
+            location: [135, 285],
+            text: 'start',
+            font: '30pt Consolas',
+            color: Color.black
+        },
+        {
+            type: 'text',
+            location: [110, 425],
+            text: 'credits',
+            font: '30pt Consolas',
+            color: Color.black
+        }
+    ], {
+        '[90,225,290,322]': 'USER_NAME=prompt("What is your name?","User000");LLevel.update(1,0);',
+        '[100,365,270,440]': 'LLevel.update(2,0);'
+    });
     const level_select = new Room('level_select', [{
         type: 'web_image',
         location: [0, 0],
-        url: 'https://codehs.com/uploads/17a255ac46fcbe31d6789d986d98af8c'
+        url: 'https://dl.dropboxusercontent.com/s/bx4vsrex31dn9tx/levels.png'
+    }, {
+        type: 'text',
+        location: [70, 65],
+        text: 'Level select',
+        font: '30pt Consolas',
+        color: Color.black
+    }, {
+        type: 'text',
+        location: [270, 475],
+        text: 'back',
+        font: '30pt Consolas',
+        color: Color.black
     }], {
-        '[10,100,75,165]': 'LLevel = Level1; LLevel.pos = [0,0];LLevel.update();',
-        '[90,100,160,165]': 'LLevel = Level2; LLevel.pos = [0,0];LLevel.update();',
-        '[175,100,240,170]': 'LLevel = Level3; LLevel.pos = [0,0];LLevel.update();',
-        '[250,100,320,170]': 'LLevel = Level4; LLevel.pos = [0,0];LLevel.update();',
-        '[5,190,95,260]': 'LLevel = Level5; LLevel.pos = [0,0];LLevel.update();',
-        '[90,190,165,260]': 'LLevel = Level6; LLevel.pos = [0,0];LLevel.update();',
-        '[180,190,235,270]': 'LLevel = Level7; LLevel.pos = [0,0];LLevel.update();',
-        '[250,200,325,260]': 'LLevel = Level8; LLevel.pos = [0,0];LLevel.update();'
+        '[31,85,125,167.]': 'LLevel = Level1; LLevel.pos = [0,0];LLevel.update();',
+        '[153,85,250,165]': 'LLevel = Level2; LLevel.pos = [0,0];LLevel.update();',
+        '[282,85,375,164]': 'LLevel = Level3; LLevel.pos = [0,0];LLevel.update();',
+        '[30,195,124,277]': 'LLevel = Level4; LLevel.pos = [0,0];LLevel.update();',
+        '[152,200,250,280]': 'LLevel = Level5; LLevel.pos = [0,0];LLevel.update();',
+        '[280,200,375,270]': 'LLevel = Level6; LLevel.pos = [0,0];LLevel.update();',
+        '[90,300,185,380]': 'LLevel = Level7; LLevel.pos = [0,0];LLevel.update();',
+        '[220,300,310,380]': 'LLevel = Level8; LLevel.pos = [0,0];LLevel.update();',
+        '[255,425,395,495]': 'LLevel.update()'
     }, new Room('level_overlay'));
-    const LevelStart = new Level('LStart', new Grid([1, 2], [
-        [start_room, level_select]
+    const credits = new Room('credits', [{
+        type: 'web_image',
+        location: [0, 0],
+        url: 'https://dl.dropboxusercontent.com/s/zj92mm0ebqh727z/credits.png'
+    }, {
+        type: 'text',
+        location: [270, 475],
+        text: 'back',
+        font: '30pt Consolas',
+        color: Color.black
+    }], {
+        '[255,425,400,500]': 'LLevel.update(0,0)'
+    })
+    const LevelStart = new Level('LStart', new Grid([1, 3], [
+        [start_room, level_select, credits]
     ]), pos = [0, 0]);
     /* 
     template for rooms with only url

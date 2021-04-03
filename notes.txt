@@ -1,0 +1,1 @@
+to get photo ver of dropbox upload, put "http://dl.dropboxusercontent.com" instead of "https://dropbox.com"
