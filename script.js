@@ -64,7 +64,7 @@ window.onload = function() {
         constructor(name = 'Room Object', scene_data = [{
                 type: 'web_image',
                 location: [50, 50],
-                url: 'https://store8.gofile.io/download/eXG4Pv/d86c0ab1b0ece084997f46464313d3b7/not_found.png',
+                url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
                 set_size: [100, 100]
             }], action_points = {}, linked_overlay) {
                 this.name = name;
@@ -289,6 +289,18 @@ window.onload = function() {
             location: [110, 425],
             text: 'credits',
             font: '30pt Consolas',
+            color: Color.black
+        }, {
+            type: 'text',
+            location: [37, 100],
+            text: 'Escape the Room',
+            font: '30pt Consolas',
+            color: Color.black
+        }, {
+            type: 'text',
+            location: [270, 500],
+            text: 'v0.0.01pre-alpha',
+            font: '11pt Consolas',
             color: Color.black
         }
     ], {
