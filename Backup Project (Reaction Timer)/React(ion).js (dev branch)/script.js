@@ -8,12 +8,12 @@ window.onload = function() {
 
     setTimer(function b() {
         a += 1;
-        if (a >= Randomizer.nextInt(10, 20)) {
+        if (a >= Randomizer.nextInt(9, 20)) {
             background.setColor(Color.red);
             orig = new Date().getTime();
             stopTimer(b);
         }
-    }, 100);
+    }, 99);
     mouseClickMethod(function() {
         if (!clicked && orig != undefined) {
             document.getElementById('time').innerHTML = (new Date().getTime() - orig) / 1000 + 's';

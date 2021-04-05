@@ -1,0 +1,1 @@
+var b=new Rectangle(getWidth(),getHeight());b.setColor(Color.green),add(b);var orig,a=0,c=0;setTimer(function e(){(a+=1)>=Randomizer.nextInt(9,20)&&(b.setColor(Color.red),orig=(new Date).getTime(),stopTimer(e))},99),mouseClickMethod(function(){0==c&&(println(((new Date).getTime()-orig)/1e3),c=1)});
