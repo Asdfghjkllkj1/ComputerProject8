@@ -1,55 +1,6 @@
 window.onload = function() {
-    // Code to integrate JS with HTML^^
-    //CLASSES
-    /**
-     * @description  Essentially a better implementation of CodeHS Grid object - allows for usage in default function/class parameters
-     * @class Grid
-     * @param {list[2]} dimensions       A 2-item list for the dimensions of the generated 2D array (grid)
-     * @param {list[list]} prefill_data  An optional argument that prefills the generated grid with data (MUST BE 2D array structure)
-     */
-    class Grid {
-        constructor(dimensions, prefill_data = undefined) {
-                this.dimensions = dimensions;
-                // dimensions for the 2d array (width,height format)
-                this.data = Array.from(Array(dimensions[0]), () => new Array(dimensions[1]));
-                // makes a 2d array w/ dims from dimensions
-                if (prefill_data != undefined) {
-                    for (var i = 0; i < dimensions[0]; i++) {
-                        for (var j = 0; j < dimensions[1]; j++) {
-                            if (prefill_data[i][j] != undefined) {
-                                this.data[i][j] = prefill_data[i][j];
-                            }
-                        }
-                    }
-                } // this code looks disgusting :/ make more efficient
-            }
-            /**
-             * @description  A function that checks whether a position is index-able within a grid
-             * @function inBound
-             * @param {list[2]} pos  The position to be checked
-             * @returns 
-             */
-        inBound(pos) {
-                return check_bound([0, 0, this.dimensions[0], this.dimensions[1]], pos);
-            }
-            /**
-             * @description  A function that sets a value inside a grid to another value
-             * @function set
-             * @param {list[2]} pos  The position inside the grid to change to val
-             * @param {any} val      The value to change pos to
-             * @returns 
-             */
-        set = (pos, val) => this.data[pos[0], pos[1]] = val;
-        /**
-         * @description  A function taht returns the value of a specific position inside the grid
-         * @function get
-         * @param {list[2]} pos  The position of the desired value inside the grid
-         * @returns 
-         */
-        get(pos) {
-            return this.data[pos[0], pos[1]];
-        }
-    }
+    // Code to integrate JS with HTML, and loading globals.js with jquery^^
+    //MARK: Classes
 
     /**
      * @description A general container for room objects
@@ -59,7 +10,6 @@ window.onload = function() {
      * @param {dict} action_point    A dict of action points and their bounding boxes
      * @param {Room} linked_overlay  A Room object to be displayed with the room
      */
-
     class Room {
         constructor(name = 'Room Object', scene_data = [{
                 type: 'web_image',
@@ -104,41 +54,7 @@ window.onload = function() {
         };
     }
 
-    /**
-     * @description  A container for linking Room objects
-     * @class Level
-     * @param {string} name  The name for the entire level
-     * @param {Grid} rooms   A grid (2D array) of Room objects
-     * @param {list[2]} pos  The position of the player (and the position of the room to display)
-     */
-    class Level {
-        constructor(name, rooms = undefined, pos = [0, 0]) {
-                this.name = name;
-                // the name of the level
-                if (rooms == undefined) {
-                    this.rooms = new Grid([1, 1], new Room(linked_overlay = new Room()));
-                } else {
-                    this.rooms = rooms;
-                }
-                // rooms is a grid of Room objects
-                this.pos = pos;
-                // the position at which the player is at
-                this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
-                // room loaded associated with the level
-            }
-            /**
-             * @description  A function that updates the scene based on coordinates and moves the loaded position to new_x, new_y
-             * @function update
-             * @param {int} new_x  New x position to go to
-             * @param {int} new_y  New y position to go to
-             */
-        update(new_x = 0, new_y = 0) {
-            if (this.rooms.inBound([new_y, new_x])) this.pos = [new_y, new_x];
-            this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
-        }
-    }
-
-    //FUNCTIONS
+    //MARK: Functions
     /**
      * @description  Loads a scene based on scene data
      * @function load_scene
@@ -233,43 +149,22 @@ window.onload = function() {
       arc       DONE
       oval      DONE
      */
-
-    /**
-     * @description  Checks if a coordinate falls within a 4-coordinate boundary
-     * @function check_bound
-     * @param {list[4]} bound  A rectangle boundary to check whether coord is within
-     * @param {list[2]} coord  A coordinate to check if it's in bound's rectangle
-     * @return {bool}          Whether coord falls inside bound's rectangle
-     */
-    function check_bound(bound, coord) {
-        //checks if coord is in bound; coord -> [x, y], bound -> [x1, y1, x2, y2]
-        return (bound[0] <= coord[0] && coord[0] <= bound[2]) && (bound[1] <= coord[1] && coord[1] <= bound[3]);
+    /* From attempt at global js files
+    function include(file) {
+        var script = document.createElement('script');
+        script.src = file;
+        script.type = 'text/javascript';
+        script.defer = true;
+        document.getElementsByTagName('head').item(0).appendChild(script);
     }
-
-    /**
-     * @whyimadethis  got lazy writing "document.getElementById..." all the time
-     * @description  Changes HTML tag text by IDs
-     * @function changeHTML
-     * @param {string} id        The ID of the HTML tag to be changed
-     * @param {string} new_text  The text to change to
-     */
-    function changeHTML(id, new_text) {
-        document.getElementById(id).innerHTML = new_text;
-    }
-
-    function changeLevel(new_level) {
-        LLevel = eval(new_level);
-        LLevel.pos = [0, 0];
-        LLevel.update();
-    }
-
-    //GLOBAL VARIABLES
+    */
+    //MARK: Global Variables
     const WIDTH = getWidth();
     const HEIGHT = getHeight();
     var USER_NAME;
     var loaded_room;
     var LLevel;
-    //GAME SETUP
+    //MARK: Game Setup
     //TODO: set up room objects for all rooms in game
     //To Do: Change the need for "LLevel = __level-name__"; LLevel.pos = [0,0]; LLevel.update();" in action points for rooms
     const start_room = new Room('start_room', [{
@@ -304,7 +199,7 @@ window.onload = function() {
             color: Color.black
         }
     ], {
-        '[90,225,290,322]': 'USER_NAME=prompt("What is your name?","User000");LLevel.update(1,0);',
+        '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(1,0);',
         '[100,365,270,440]': 'LLevel.update(2,0);'
     });
     const level_select = new Room('level_select', [{
@@ -361,12 +256,20 @@ window.onload = function() {
     var L1e = new Room('Lv1_entrance', [{
         type: 'web_image',
         location: [0, 0],
-        url: 'https://codehs.com/uploads/bef060442d7fb97e5775a3b5e953926c'
+        url: 'https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();'
+        '[0,0,50,500]': 'LLevel=LevelStart;LLevel.pos = [0,0];LLevel.update();',
+        '[350,0,400,500]': 'LLevel.update(1,0);'
     });
-    const Level1 = new Level('L1', new Grid([1, 1], [
-        [L1e]
+    var L1r = new Room('Lv1_right', [{
+        type: 'web_image',
+        location: [0, 0],
+        url: 'https://dl.dropboxusercontent.com/s/6advobsa2hmkhhs/L1r.png'
+    }], {
+        '[0,0,50,500]': 'LLevel.update(0,0);'
+    })
+    const Level1 = new Level('L1', new Grid([1, 2], [
+        [L1e, L1r]
     ]), pos = [0, 0]);
     var L2e = new Room('Lv2_entrance', [{
         type: 'web_image',

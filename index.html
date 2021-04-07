@@ -5,8 +5,10 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://static.codehs.com/gulp/80550f5fc4071985bfef352d04f005ca3de931d3/chs-js-lib/chs.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script data-main="script" src='globals.js'></script>
+    <!--Global stuff-->
     <style>
         canvas {
             border: 1px solid black;
@@ -29,8 +31,8 @@
     <h2 id='username'>null</h2>
     <h2 id='current_doc'>null</h2>
     <h3 id='mouse_pos'>null</h3>
-    <h3 id='text'>t e x t </h3>
-    <h3 id='text2'>text</h3>
+    <h3 id='text'>text</h3>
+    <h3 id='text2'>text2</h3>
     <IMG SRC="javascript:alert('XSS');">
     <canvas width="400" height="500" class="codehs-editor-canvas"></canvas>
     <!--<pre id="console"></pre>-->
@@ -38,10 +40,7 @@
     <!--
 UNDER THIS IS THE CODE
   -->
-    <script type='text/javascript' src="script.js"></script>
-
-    <!--ATTRIBUTION-->
-    <!--<a href="https://www.freepik.com/vectors/banner">Banner vector created by katemangostar - www.freepik.com</a>-->
+    <script id='script' type='text/javascript' src="script.js"></script>
 
 </body>
 
