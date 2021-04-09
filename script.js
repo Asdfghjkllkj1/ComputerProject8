@@ -77,7 +77,7 @@ window.onload = function() {
         }, {
             type: 'text',
             location: [270, 500],
-            text: 'v0.0.01pre-alpha',
+            text: 'v0.0.02pre-alpha',
             font: '11pt Consolas'
         }
     ], {
