@@ -6,58 +6,6 @@ var loaded_room;
 var LLevel;
 //MARK: Classes
 /**
- * @description A general container for room objects
- * @class Room
- * @param {string} name          A name to be displayed for debug/user interfacing purposes
- * @param {list} scene_data      A list of objects for each object to be displayed
- * @param {dict} action_point    A dict of action points and their bounding boxes
- * @param {Room} linked_overlay  A Room object to be displayed with the room
- */
-class Room {
-    constructor(name = 'Room Object', scene_data = [{
-            type: 'web_image',
-            location: [50, 50],
-            url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
-            set_size: [100, 100]
-        }], action_points = {}, linked_overlay) {
-            this.name = name;
-            // the name of the room, for displaying to the user/debugging
-            this.scene_data = scene_data;
-            // scene_data holds the data for the room
-            this.action_points = action_points;
-            /* action_points is a dict with keys being lists of 4 coordinates as a bounding box where actions happen.
-            The value is a callback function (that may change loaded_room to another room object). */
-            if (linked_overlay != undefined) {
-                this.linked_overlay = linked_overlay;
-            }
-            // for linking room data to overlays to be displayed with the room
-        }
-        /**
-         * @description  Displays the corresponding scene of the room; Removes all objects already on the room
-         * @function display
-         * @param {bool} overlay  If the room is being displayed as an overlay to something else
-         */
-    display(overlay = false) {
-            if (!overlay) {
-                removeAll();
-            }
-            load_scene(this.scene_data);
-        }
-        /**
-         * @description  Checks if a position hits an action point
-         * @function update
-         * @param {list[2]} pos  A position (usually of mouse) to check whether it hits action points or not
-         */
-    update = pos => {
-        for (var action_bound in this.action_points) {
-            if (check_bound(eval(action_bound), pos) == true) {
-                eval(this.action_points[action_bound]);
-            }
-        }
-    };
-}
-
-/**
  * @description  Essentially a better implementation of CodeHS Grid object - allows for usage in default function/class parameters
  * @class Grid
  * @param {list[2]} dimensions       A 2-item list for the dimensions of the generated 2D array (grid)
@@ -150,8 +98,9 @@ function load_scene(raw_data) {
     raw_data.forEach(function(object, index) {
         var _load;
         if (object.type == 'web_image') {
+            var image_pos = ('location' in object) ? [object.location[0], object.location[1]] : [0, 0];
             _load = new WebImage(object.url);
-            _load.setPosition(object.location[0], object.location[1]);
+            _load.setPosition(image_pos[0], image_pos[1]);
             if ('set_size' in object) {
                 //check needed because set_size optional
                 _load.setSize(object.set_size[0], object.set_size[1]);
@@ -170,9 +119,14 @@ function load_scene(raw_data) {
             _load.setColor(object.color);
             //get circle info -> _load
         } else if (object.type == 'text') {
-            _load = new Text(object['text'], object['font']);
+            var text_font = ('font' in object) ? object['font'] : '30pt Consolas'; //YES!! Got to use ? operator
+            _load = new Text(object['text'], text_font);
             _load.setPosition(object.location[0], object.location[1]);
-            _load.setColor(object.color);
+            if ('color' in object) {
+                _load.setColor(object.color);
+            } else {
+                _load.setColor(Color.black);
+            }
             //get text info -> _load
         } else if (object.type == 'line') {
             _load = new Line(object.location[0], object.location[1], object.location[2], object.location[3]);
@@ -256,49 +210,3 @@ function check_bound(bound, coord) {
 function changeHTML(id, new_text) {
     document.getElementById(id).innerHTML = new_text;
 }
-
-function adsfjnoiewklsdvn() {
-    var asdfhwleaskdjv = Math.sin(Randomizer.randInt(1, 29484727369));
-    var fwehusdikhckj4tnfiul = Math.acosh(Randomizer.randInt(1209948, 2180249823659));
-    var awtgdsviiue = Math.tanh(Math.atan2(asdfhwleaskdjv, fwehusdikhckj4tnfiul)) + Ranomizer.randInt(129, 2398475);
-    return Math.atanh(asdfhwleaskdjv + (1 / Math.sqrt(awtgdsviiue - fwehusdikhckj4tnfiul) - Randomizer.randInt(1, 23853)));
-}
-
-function fwgdfxuh() {
-    var qwrfesg = Math.sin(Randomizer.randInt(1, 29484727369));
-    var zeq3wert = Math.acosh(Randomizer.randInt(1209948, 2180249823659));
-    var iwofesdvlkr = Math.tanh(Math.atan2(qwrfesg, zeq3wert)) + Ranomizer.randInt(129, 2398475);
-    return Math.atanh(qwrfesg + (1 / Math.sqrt(iwofesdvlkr - zeq3wert) - Randomizer.randInt(1, 23853)));
-}
-
-class aisdfjkladiwj {
-    constructor(qrwfesgdf, wfesrdfbg, wdfergf, dwafesdg, wafesrfgv) {
-        this.s = qrwfesgdf;
-        this.n = wfesrdfbg;
-        this.q = wdfergf;
-        this.e = dwafesdg;
-        this.d = wafesrfgv;
-    }
-
-    dfdosdfgfis() {
-        var afsdgfh = Math.acos(this.s);
-        var befwsgrdf = Math.floor(Math.clz32(this.q)) + Math.trunc(this.q / Randomizer.randInt(219, 95204353));
-        return Math.log1p(afsdgfh) + Math.expm1(befwsgrdf) + Math.hypot(Math.imul(Randomizer.randInt(214, 235235634)));
-    }
-}
-class aisdfjdkladiwj {
-    constructor(qrwfesgdf, wfesrdfbg, wdfergf, wdeftfgh, nqwhefdgjvkg) {
-        this.s = qrwfesgdf;
-        this.n = wfesrdfbg;
-        this.q = wdfergf;
-        this.e = wdeftfgh;
-        this.d = nqwhefdgjvkg;
-    }
-
-    dfdosdfgfis() {
-        var iqhdf = Math.acos(this.s);
-        var heoiwhfdkl = Math.floor(Math.clz32(this.q)) + Math.trunc(this.q / Randomizer.randInt(219, 95204353));
-        return Math.log2(iqhdf) + Math.expm1(heoiwhfdkl) + Math.hypot(Math.imul(Randomizer.randInt(214, 235235634)));
-    }
-}
-var testing = 42069;
