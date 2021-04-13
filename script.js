@@ -11,11 +11,12 @@ window.onload = function() {
      */
     class Room {
         constructor(name = 'Room Object', scene_data = [{
-                type: 'web_image',
-                location: [50, 50],
-                url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
-                set_size: [100, 100]
-            }], action_points = {}, linked_overlay) {
+                    type: 'web_image',
+                    location: [50, 50],
+                    url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
+                    set_size: [100, 100]
+                }], action_points = {}, local_data = {},
+                on_update = function() {}, linked_overlay) {
                 this.name = name;
                 // the name of the room, for displaying to the user/debugging
                 this.scene_data = scene_data;
@@ -27,6 +28,10 @@ window.onload = function() {
                     this.linked_overlay = linked_overlay;
                 }
                 // for linking room data to overlays to be displayed with the room
+                this.local_data = local_data;
+                // any room-related data
+                this.on_update = on_update;
+                // function to be called in update() function (maybe for reading from local_data)
             }
             /**
              * @description  Displays the corresponding scene of the room; Removes all objects already on the room
@@ -45,11 +50,14 @@ window.onload = function() {
              * @param {list[2]} pos  A position (usually of mouse) to check whether it hits action points or not
              */
         update = pos => {
+            //this.on_update();
             for (var action_bound in this.action_points) {
                 if (check_bound(eval(action_bound), pos) == true) {
                     eval(this.action_points[action_bound]);
+                    break;
                 }
             }
+            this.on_update(); //Depends on update order whether action_points or on_update should come first
         };
     }
 
@@ -110,13 +118,13 @@ window.onload = function() {
         '[255,425,395,495]': 'LLevel.update();'
     }, new Room('level_overlay'));
     const credits = new Room('credits', [{
-        type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/zj92mm0ebqh727z/credits.png'
-    }, {
-        type: 'text',
-        location: [270, 475],
-        text: 'back'
-    }], {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/zj92mm0ebqh727z/credits.png'
+        },
+        { type: 'text', location: [270, 475], text: 'back' },
+        { type: 'text', location: [20, 50], text: 'Made by: *AUTHOR_NAME*', font: '20pt Consolas' },
+        { type: 'text', location: [20, 110], text: 'Artwork: *ARTIST_NAME*', font: '20pt Consolas' }
+    ], {
         '[255,425,400,500]': 'LLevel.update(0,0)'
     })
     const LevelStart = new Level('LStart', new Grid([1, 3], [
@@ -157,11 +165,34 @@ window.onload = function() {
     ], {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
     });
+    const L1r_safe_open = new Room('Lv1_safe-open', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/2stw5fgspfjzhug/L1r_overlay--open_safe.png'
+    }])
     const L1r_safe_closeup = new Room('Lv1_safe-closeup', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
     }], {
+        '[70,175,132,222]': 'this.local_data["cur_pass"].push(1);', //1
+        '[132,175,225,222]': 'this.local_data["cur_pass"].push(2);', //2
+        '[225,175,300,222]': 'this.local_data["cur_pass"].push(3);', //3
+        '[70,222,132,270]': 'this.local_data["cur_pass"].push(4);', //4
+        '[132,222,225,270]': 'this.local_data["cur_pass"].push(5);', //5
+        '[225,222,300,270]': 'this.local_data["cur_pass"].push(6);', //6
+        '[70,270,132,310]': 'this.local_data["cur_pass"].push(7);', //7
+        '[132,270,225,310]': 'this.local_data["cur_pass"].push(8);', //8
+        '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
+        '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);' //put this last so the update order gets to the numpad first
+    }, local_data = { correct_pass: [3, 8, 4, 6], cur_pass: [] }, on_update = function() {
+        if (this.local_data['cur_pass'].length == 4) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                LLevel.update(1, 0);
+                LLevel.loaded_room.linked_overlay = L1r_safe_open;
+            }
+            this.local_data['cur_pass'] = [];
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
     });
     const Level1 = new Level('L1', new Grid([2, 2], [
         [L1e, L1r],
@@ -238,10 +269,16 @@ window.onload = function() {
         // optional: add code that runs every time a click (not necessarily one to do something) happens
         LLevel.loaded_room.update([e.getX(), e.getY()]);
         LLevel.loaded_room.display();
+        if (LLevel.loaded_room.linked_overlay != undefined) {
+            LLevel.loaded_room.linked_overlay.display(overlay = true);
+        }
         document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
         changeHTML('text', LLevel.name);
         changeHTML('text2', LLevel.pos);
         changeHTML('username', USER_NAME);
+        if (LLevel.loaded_room.linked_overlay.name != undefined) {
+            changeHTML('text4', LLevel.loaded_room.linked_overlay.name);
+        }
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3

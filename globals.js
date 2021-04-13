@@ -210,3 +210,5 @@ function check_bound(bound, coord) {
 function changeHTML(id, new_text) {
     document.getElementById(id).innerHTML = new_text;
 }
+
+const equals = (list1, list2) => JSON.stringify(list1) === JSON.stringify(list2);
