@@ -1,25 +1,18 @@
 window.onload = function() {
     var background = new Rectangle(getWidth(), getHeight());
-    background.setColor(Color.green);
+    background.setColor(Color.red);
     add(background);
-    var a = 0;
-    var orig;
-    var clicked = false;
-
-    setTimer(function b() {
-        a += 1;
-        if (a >= Randomizer.nextInt(9, 20)) {
-            background.setColor(Color.red);
-            orig = new Date().getTime();
-            stopTimer(b);
-        }
-    }, 99);
-    mouseClickMethod(function() {
-        if (!clicked && orig != undefined) {
-            document.getElementById('time').innerHTML = (new Date().getTime() - orig) / 1000 + 's';
-            clicked = true;
-        }
-    });
+    var orig = new Date().getTime();
+    var clicked = 0;
+    setTimeout(function() {
+        background.setColor(Color.green);
+        mouseClickMethod(function() {
+            if (clicked == 0) {
+                println(new Date().getTime() - orig);
+                clicked = 1;
+            }
+        })
+    }, Randomizer.nextInt(9, 20) * 1e3);
     if (typeof start === 'function') {
         start();
     }

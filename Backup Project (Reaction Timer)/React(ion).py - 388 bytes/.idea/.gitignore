@@ -1,3 +1,3 @@
-# Default ignored files
-/shelf/
+#To ignore PyCharm workspace stuff
+/.idea
 /workspace.xml

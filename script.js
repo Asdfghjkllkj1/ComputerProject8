@@ -155,8 +155,8 @@ window.onload = function() {
     }], {
         '[0,0,50,500]': 'LLevel.update(0,0);',
         '[350,385,400,450]': 'LLevel.update(1,1);',
-        '[80,195,315,420]': 'LLevel.update(0,1);'
-    });
+        '[80,195,315,420]': 'if (this.local_data["open_safe"]==false){LLevel.update(0,1);}else{LLevel.update(1,2);}'
+    }, local_data = { open_safe: false });
     const L1r_paper_closeup = new Room('Lv1_paper-closeup', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
@@ -165,9 +165,15 @@ window.onload = function() {
     ], {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
     });
+    const L1r_safe_inside = new Room('Lv1_safe-inside', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/t3e5adbmb44pdt2/L1r_overlay--safe_inside.png'
+    }])
     const L1r_safe_open = new Room('Lv1_safe-open', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/2stw5fgspfjzhug/L1r_overlay--open_safe.png'
+        url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
+        location: [0, 104],
+        set_size: [360, 365]
     }])
     const L1r_safe_closeup = new Room('Lv1_safe-closeup', [{
         type: 'web_image',
@@ -189,14 +195,15 @@ window.onload = function() {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
                 LLevel.update(1, 0);
                 LLevel.loaded_room.linked_overlay = L1r_safe_open;
+                LLevel.loaded_room.local_data['open_safe'] = true;
             }
             this.local_data['cur_pass'] = [];
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
     const Level1 = new Level('L1', new Grid([2, 2], [
-        [L1e, L1r],
-        [L1r_safe_closeup, L1r_paper_closeup]
+        [L1e, L1r, undefined],
+        [L1r_safe_closeup, L1r_paper_closeup, L1r_safe_inside]
     ]), pos = [0, 0]);
     const L2e = new Room('Lv2_entrance', [{
         type: 'web_image',

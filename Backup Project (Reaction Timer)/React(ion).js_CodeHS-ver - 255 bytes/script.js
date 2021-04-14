@@ -1,0 +1,1 @@
+var b=new Rectangle(400,500);b.setColor(Color.red);add(b);var c=0;setTimeout(function(){var o=new Date().getTime();b.setColor(Color.green);mouseClickMethod(function(){if(c==0){println((new Date().getTime()-o)/1e3);c=1;}});},Randomizer.nextInt(9,20)*1e2);
