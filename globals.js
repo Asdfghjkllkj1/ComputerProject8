@@ -31,7 +31,7 @@ class Grid {
          * @description  A function that checks whether a position is index-able within a grid
          * @function inBound
          * @param {list[2]} pos  The position to be checked
-         * @returns 
+         * @returns {bool}  Whether pos is in bounds or not
          */
     inBound(pos) {
             return check_bound([0, 0, this.dimensions[0], this.dimensions[1]], pos);
@@ -41,14 +41,13 @@ class Grid {
          * @function set
          * @param {list[2]} pos  The position inside the grid to change to val
          * @param {any} val      The value to change pos to
-         * @returns 
          */
     set = (pos, val) => this.data[pos[0], pos[1]] = val;
     /**
-     * @description  A function taht returns the value of a specific position inside the grid
+     * @description  A function that returns the value of a specific position inside the grid
      * @function get
      * @param {list[2]} pos  The position of the desired value inside the grid
-     * @returns 
+     * @returns {any}  The data at the grid object
      */
     get(pos) {
         return this.data[pos[0], pos[1]];
@@ -62,7 +61,7 @@ class Grid {
  * @param {list[2]} pos  The position of the player (and the position of the room to display)
  */
 class Level {
-    constructor(name, rooms = undefined, pos = [0, 0]) {
+    constructor(name, rooms = undefined, pos = [0, 0], user_data = {}) {
             this.name = name;
             // the name of the level
             if (rooms == undefined) {
@@ -75,6 +74,8 @@ class Level {
             // the position at which the player is at
             this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
             // room loaded associated with the level
+            this.user_data = user_data;
+            // user data associated with the level
         }
         /**
          * @description  A function that updates the scene based on coordinates and moves the loaded position to new_x, new_y
@@ -83,8 +84,26 @@ class Level {
          * @param {int} new_y  New y position to go to
          */
     update(new_x = 0, new_y = 0) {
-        if (this.rooms.inBound([new_y, new_x])) this.pos = [new_y, new_x];
-        this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
+            if (this.rooms.inBound([new_x, new_y])) {
+                this.pos = [new_x, new_y];
+            }
+            this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
+        }
+        /**
+         * @description  A function that can fetch a key out of the user_data
+         * @function fetch_data
+         * @param {string} key  The key to access user_data from
+         * @returns   The data that was requested at key
+         */
+    fetch_data = (key) => this.user_data[key];
+    /**
+     * @description  A function that pushes data into user_data, in a specific key
+     * @function push_data
+     * @param {string} key  The key in user_data to put data into
+     * @param {any} data    The actual data to insert
+     */
+    push_data(key, data) {
+        this.user_data[key] = data;
     }
 }
 
@@ -119,7 +138,7 @@ function load_scene(raw_data) {
             _load.setColor(object.color);
             //get circle info -> _load
         } else if (object.type == 'text') {
-            var text_font = ('font' in object) ? object['font'] : '30pt Consolas'; //YES!! Got to use ? operator
+            var text_font = ('font' in object) ? object['font'] : '30pt Consolas';
             _load = new Text(object['text'], text_font);
             _load.setPosition(object.location[0], object.location[1]);
             if ('color' in object) {
@@ -194,7 +213,7 @@ NOTE: the later in the dict an object appears, the "newer" it will be displayed
  * @function check_bound
  * @param {list[4]} bound  A rectangle boundary to check whether coord is within
  * @param {list[2]} coord  A coordinate to check if it's in bound's rectangle
- * @return {bool}          Whether coord falls inside bound's rectangle
+ * @returns {bool}          Whether coord falls inside bound's rectangle
  */
 function check_bound(bound, coord) {
     //checks if coord is in bound; coord -> [x, y], bound -> [x1, y1, x2, y2]
@@ -210,5 +229,11 @@ function check_bound(bound, coord) {
 function changeHTML(id, new_text) {
     document.getElementById(id).innerHTML = new_text;
 }
-
+/**
+ * @description  A function that compares 2 lists
+ * @function equals
+ * @param {list} list1  Input list #1
+ * @param {list} list2  Input list #2
+ * @returns {bool}  Whether list1 is equal to list2
+ */
 const equals = (list1, list2) => JSON.stringify(list1) === JSON.stringify(list2);

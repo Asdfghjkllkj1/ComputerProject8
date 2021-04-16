@@ -85,12 +85,12 @@ window.onload = function() {
         }, {
             type: 'text',
             location: [270, 500],
-            text: 'v0.0.02pre-alpha',
+            text: 'v0.0.03pre-alpha',
             font: '11pt Consolas'
         }
     ], {
-        '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(1,0);',
-        '[100,365,270,440]': 'LLevel.update(2,0);'
+        '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
+        '[100,365,270,440]': 'LLevel.update(0,2);'
     });
     const level_select = new Room('level_select', [{
             type: 'web_image',
@@ -125,19 +125,11 @@ window.onload = function() {
         { type: 'text', location: [20, 50], text: 'Made by: *AUTHOR_NAME*', font: '20pt Consolas' },
         { type: 'text', location: [20, 110], text: 'Artwork: *ARTIST_NAME*', font: '20pt Consolas' }
     ], {
-        '[255,425,400,500]': 'LLevel.update(0,0)'
+        '[255,425,400,500]': 'LLevel.update()'
     })
     const LevelStart = new Level('LStart', new Grid([1, 3], [
         [start_room, level_select, credits]
     ]), pos = [0, 0]);
-    /* 
-    template for rooms with only url
-    new Room('__name__', [{
-        type: 'web_image',
-        location: [0,0],
-        url: '__url__'
-    }], {'[__coords__]':'__callback__'});
-    */
     const L1e = new Room('Lv1_entrance', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png'
@@ -146,39 +138,52 @@ window.onload = function() {
         { type: 'text', location: [0, 490], text: 'navigate through rooms!', font: '20pt Consolas' },
         { type: 'text', location: [0, 128], text: 'Open this door!', font: '20pt Consolas' }
     ], {
-        '[0,0,50,500]': 'LLevel=LevelStart; LLevel.update();',
-        '[350,0,400,500]': 'LLevel.update(1,0);'
+        '[350,0,400,500]': 'LLevel.update(0,1);',
+        '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel.loaded_room.linked_overlay = L1e_open_door;LLevel.loaded_room.scene_data=[{type: "web_image",url: "https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png"},{ type: "text", location: [0, 128], text: "Opened!", font: "20pt Consolas" }];LLevel=LevelStart;LLevel.update(0,1);}'
     });
+    const L1e_open_door = new Room('Lv1_open-door_overlay', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
+        location: [45, 150],
+        set_size: [200, 300]
+    }])
     const L1r = new Room('Lv1_right', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/ljoogcbp2hfwyx4/L1r_with-paper.png'
     }], {
-        '[0,0,50,500]': 'LLevel.update(0,0);',
-        '[350,385,400,450]': 'LLevel.update(1,1);',
-        '[80,195,315,420]': 'if (this.local_data["open_safe"]==false){LLevel.update(0,1);}else{LLevel.update(1,2);}'
-    }, local_data = { open_safe: false });
+        '[0,0,50,500]': 'LLevel.update(0,0);', // nav back to L1e
+        '[350,385,400,450]': 'LLevel.update(1,1);', // paper slip
+        '[80,195,315,420]': 'if(LLevel.fetch_data("open_safe")==true){LLevel.update(1,2);}else{LLevel.update(1,0);}' //to safe
+    });
     const L1r_paper_closeup = new Room('Lv1_paper-closeup', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
         },
         { type: 'text', location: [135, 250], text: '3̶͊̆̓ͅ8̷͎̜̩̰̄̕4̶̨͈̜͈͌̔̕6̶͚̈́̄', font: '45pt Consolas' } //password for L1r safe
     ], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);'
     });
     const L1r_safe_inside = new Room('Lv1_safe-inside', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/t3e5adbmb44pdt2/L1r_overlay--safe_inside.png'
-    }])
-    const L1r_safe_open = new Room('Lv1_safe-open', [{
+    }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);LLevel.push_data("completed", true);'
+    })
+    const L1r_safe_open = new Room('Lv1_safe-open_overlay', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
         location: [0, 104],
         set_size: [360, 365]
-    }])
+    }]);
     const L1r_safe_closeup = new Room('Lv1_safe-closeup', [{
-        type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
-    }], {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
+        },
+        { type: 'text', location: [88, 215], text: '1   2   3' },
+        { type: 'text', location: [88, 260], text: '4   5   6' },
+        { type: 'text', location: [88, 303], text: '7   8   9' },
+        { type: 'text', location: [174, 350], text: '0' }
+    ], {
         '[70,175,132,222]': 'this.local_data["cur_pass"].push(1);', //1
         '[132,175,225,222]': 'this.local_data["cur_pass"].push(2);', //2
         '[225,175,300,222]': 'this.local_data["cur_pass"].push(3);', //3
@@ -189,22 +194,22 @@ window.onload = function() {
         '[132,270,225,310]': 'this.local_data["cur_pass"].push(8);', //8
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
-        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);' //put this last so the update order gets to the numpad first
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
     }, local_data = { correct_pass: [3, 8, 4, 6], cur_pass: [] }, on_update = function() {
-        if (this.local_data['cur_pass'].length == 4) {
+        if (this.local_data['cur_pass'].length >= 4) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                LLevel.update(1, 0);
+                this.local_data['cur_pass'] = [];
+                LLevel.push_data('open_safe', true);
+                LLevel.update(0, 1);
                 LLevel.loaded_room.linked_overlay = L1r_safe_open;
-                LLevel.loaded_room.local_data['open_safe'] = true;
-            }
-            this.local_data['cur_pass'] = [];
+            } else { this.local_data['cur_pass'] = []; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
-    const Level1 = new Level('L1', new Grid([2, 2], [
-        [L1e, L1r, undefined],
+    const Level1 = new Level('L1', new Grid([2, 3], [
+        [L1e, L1r, null],
         [L1r_safe_closeup, L1r_paper_closeup, L1r_safe_inside]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], user_data = { completed: false, open_safe: false });
     const L2e = new Room('Lv2_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/c75b69cd74f41b1c690b981edd438771'
@@ -272,6 +277,9 @@ window.onload = function() {
     //MAIN LOOP
     LLevel.update()
     LLevel.loaded_room.display();
+    if (LLevel.loaded_room.linked_overlay != undefined) {
+        LLevel.loaded_room.linked_overlay.display(overlay = true);
+    }
     mouseClickMethod(function(e) {
         // optional: add code that runs every time a click (not necessarily one to do something) happens
         LLevel.loaded_room.update([e.getX(), e.getY()]);
@@ -282,10 +290,6 @@ window.onload = function() {
         document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
         changeHTML('text', LLevel.name);
         changeHTML('text2', LLevel.pos);
-        changeHTML('username', USER_NAME);
-        if (LLevel.loaded_room.linked_overlay.name != undefined) {
-            changeHTML('text4', LLevel.loaded_room.linked_overlay.name);
-        }
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
