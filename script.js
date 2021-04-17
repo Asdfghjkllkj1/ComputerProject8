@@ -442,7 +442,7 @@ window.onload = function() {
     });
     const L3e_combo_closeup = new Room('Lv3_combo-closeup', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/8dcppakp0b5wozh/4-number_combo_lock--closeup_overlay.png?dl=0'
+        url: 'https://dl.dropboxusercontent.com/s/8dcppakp0b5wozh/4-number_combo_lock--closeup_overlay.png'
     }], {
         '[25,210,90,320]': 'this.local_data["cur_pass"][0]=parseInt(prompt("Enter number for slot 1: "));',
         '[120,210,190,320]': 'this.local_data["cur_pass"][1]=parseInt(prompt("Enter number for slot 2: "));',
@@ -464,7 +464,7 @@ window.onload = function() {
         url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png'
     }, {
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png?dl=0',
+        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png',
         location: [68, 290],
         set_size: [110, 50]
     }], {
@@ -521,7 +521,7 @@ window.onload = function() {
         set_size: [WIDTH, HEIGHT + 50]
     }, {
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png?dl=0',
+        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png',
         location: [68, 290],
         set_size: [110, 50]
     }], {
@@ -573,7 +573,7 @@ window.onload = function() {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);'
     }, {}, function() {}, function() {}, new Room('Lv3_batteries', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/vwdpkljkfntgyc3/battery_pack.png?dl=0',
+        url: 'https://dl.dropboxusercontent.com/s/vwdpkljkfntgyc3/battery_pack.png',
         location: [150, 225],
         set_size: [100, 120]
     }]));
@@ -620,7 +620,7 @@ window.onload = function() {
         [L3e_safe_inside, L3r_safe_closeup, L3e_safe_closeup],
         [L3e_combo_closeup, L3l_safe_inside, L3l_safe_closeup],
         [L3e_paper_closeup, L3r_paper_closeup, L3e_safe_paper_closeup]
-    ]), pos = [0, 0], { wood_door_open: true, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
+    ]), pos = [0, 0], { wood_door_open: false, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
     //MARK: Level 4 stuff
     const L4e = new Room('Lv4_entrance', [{
         type: 'web_image',
