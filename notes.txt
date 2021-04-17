@@ -1,1 +1,34 @@
 to get photo ver of dropbox upload, put "http://dl.dropboxusercontent.com" instead of "https://dropbox.com"
+
+stuff to make room f/ safe closeup:
+new Room([{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
+        },
+        { type: 'text', location: [88, 215], text: '1   2   3' },
+        { type: 'text', location: [88, 260], text: '4   5   6' },
+        { type: 'text', location: [88, 303], text: '7   8   9' },
+        { type: 'text', location: [174, 350], text: '0' }
+    ], {
+        '[70,175,132,222]': 'this.local_data["cur_pass"].push(1);', //1
+        '[132,175,225,222]': 'this.local_data["cur_pass"].push(2);', //2
+        '[225,175,300,222]': 'this.local_data["cur_pass"].push(3);', //3
+        '[70,222,132,270]': 'this.local_data["cur_pass"].push(4);', //4
+        '[132,222,225,270]': 'this.local_data["cur_pass"].push(5);', //5
+        '[225,222,300,270]': 'this.local_data["cur_pass"].push(6);', //6
+        '[70,270,132,310]': 'this.local_data["cur_pass"].push(7);', //7
+        '[132,270,225,310]': 'this.local_data["cur_pass"].push(8);', //8
+        '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
+        '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(ROOM_JUST_CAME_FROM);' //put this last so the update order gets to the numpad first
+    }, local_data = { correct_pass: [CORRECT_PASS_HERE], cur_pass: [] }, on_update = function() {
+        if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = [];
+                LLevel.push_data(LLEVEL_THIS_SAFE_OPEN_FLAG, true);
+                LLevel.update(PUT_UPDATE_STUFF_HERE);
+                LLevel.loaded_room.linked_overlay = SAFE_OPEN_OVERLAY;
+            } else { this.local_data['cur_pass'] = []; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    });
