@@ -88,6 +88,7 @@ class Level {
                 this.pos = [new_x, new_y];
             }
             this.loaded_room = this.rooms.data[this.pos[0]][this.pos[1]];
+            this.loaded_room.on_load();
         }
         /**
          * @description  A function that can fetch a key out of the user_data
@@ -237,3 +238,7 @@ function changeHTML(id, new_text) {
  * @returns {bool}  Whether list1 is equal to list2
  */
 const equals = (list1, list2) => JSON.stringify(list1) === JSON.stringify(list2);
+
+function all_same_type(arr) {
+    return arr.every((val, i, arr) => typeof val === typeof arr[0]);
+}

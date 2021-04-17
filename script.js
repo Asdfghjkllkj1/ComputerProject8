@@ -16,7 +16,7 @@ window.onload = function() {
                     url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
                     set_size: [100, 100]
                 }], action_points = {}, local_data = {},
-                on_update = function() {}, linked_overlay) {
+                on_update = function() {}, on_load = function() {}, linked_overlay) {
                 this.name = name;
                 // the name of the room, for displaying to the user/debugging
                 this.scene_data = scene_data;
@@ -32,6 +32,8 @@ window.onload = function() {
                 // any room-related data
                 this.on_update = on_update;
                 // function to be called in update() function (maybe for reading from local_data)
+                this.on_load = on_load;
+                // function to be called when room gets loaded
             }
             /**
              * @description  Displays the corresponding scene of the room; Removes all objects already on the room
@@ -60,10 +62,14 @@ window.onload = function() {
             this.on_update(); //Depends on update order whether action_points or on_update should come first
         };
     }
-
-    //MARK: Game Setup
     //TODO: set up room objects for all rooms in game
     //TODO: Change the need for "LLevel = __level-name__";   LLevel.update();" in action points for rooms
+    const blank_room = new Room('blank_room', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
+        set_size: [0, 0]
+    }]);
+    //MARK: Start Room stuff
     const start_room = new Room('start_room', [{
             type: 'web_image',
             location: [0, 0],
@@ -85,7 +91,7 @@ window.onload = function() {
         }, {
             type: 'text',
             location: [270, 500],
-            text: 'v0.0.03pre-alpha',
+            text: 'v0.0.04pre-alpha',
             font: '11pt Consolas'
         }
     ], {
@@ -130,6 +136,7 @@ window.onload = function() {
     const LevelStart = new Level('LStart', new Grid([1, 3], [
         [start_room, level_select, credits]
     ]), pos = [0, 0]);
+    //MARK: Level 1 stuff
     const L1e = new Room('Lv1_entrance', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png'
@@ -138,15 +145,23 @@ window.onload = function() {
         { type: 'text', location: [0, 490], text: 'navigate through rooms!', font: '20pt Consolas' },
         { type: 'text', location: [0, 128], text: 'Open this door!', font: '20pt Consolas' }
     ], {
-        '[350,0,400,500]': 'LLevel.update(0,1);',
-        '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel.loaded_room.linked_overlay = L1e_open_door;LLevel.loaded_room.scene_data=[{type: "web_image",url: "https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png"},{ type: "text", location: [0, 128], text: "Opened!", font: "20pt Consolas" }];LLevel=LevelStart;LLevel.update(0,1);}'
+        '[350,0,400,500]': 'LLevel.update(0,1);LLevel.loaded_room.display();',
+        '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel=LevelStart;LLevel.update(0,1);}'
+    }, {}, function() {}, function() {
+        if (LLevel.fetch_data('completed') == true) {
+            this.linked_overlay = L1e_open_door;
+            LLevel.loaded_room.scene_data = [
+                { type: "web_image", url: "https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png" },
+                { type: "text", location: [0, 128], text: "Opened!", font: "20pt Consolas" }
+            ];
+        }
     });
     const L1e_open_door = new Room('Lv1_open-door_overlay', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
         location: [45, 150],
         set_size: [200, 300]
-    }])
+    }]);
     const L1r = new Room('Lv1_right', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/ljoogcbp2hfwyx4/L1r_with-paper.png'
@@ -165,10 +180,16 @@ window.onload = function() {
     });
     const L1r_safe_inside = new Room('Lv1_safe-inside', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/t3e5adbmb44pdt2/L1r_overlay--safe_inside.png'
+        url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png',
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);LLevel.push_data("completed", true);'
-    })
+        '[210,270,359,343]': 'if(LLevel.fetch_data("completed")==false){LLevel.loaded_room.linked_overlay=null;LLevel.push_data("completed", true);}',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1)'
+    }, {}, function() {}, function() {}, new Room('Lv1_safe-key', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+        location: [210, 270],
+        set_size: [149, 73]
+    }]))
     const L1r_safe_open = new Room('Lv1_safe-open_overlay', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
@@ -196,7 +217,7 @@ window.onload = function() {
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
     }, local_data = { correct_pass: [3, 8, 4, 6], cur_pass: [] }, on_update = function() {
-        if (this.local_data['cur_pass'].length >= 4) {
+        if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
                 this.local_data['cur_pass'] = [];
                 LLevel.push_data('open_safe', true);
@@ -210,15 +231,153 @@ window.onload = function() {
         [L1e, L1r, null],
         [L1r_safe_closeup, L1r_paper_closeup, L1r_safe_inside]
     ]), pos = [0, 0], user_data = { completed: false, open_safe: false });
+    //MARK: Level 2 stuff
     const L2e = new Room('Lv2_entrance', [{
         type: 'web_image',
-        url: 'https://codehs.com/uploads/c75b69cd74f41b1c690b981edd438771'
+        url: 'https://dl.dropboxusercontent.com/s/a3hns7bajccqozx/L2e.png'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[350,0,400,500]': 'LLevel.update(0,1);',
+        '[240,210,390,310]': 'LLevel.update(1,0);',
+        '[0,0,50,HEIGHT]': 'LLevel.update(0,2);',
+        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")&&LLevel.fetch_data("has_key")){LLevel=LevelStart; Level.update(0,1);}'
+    }, {}, function() {}, function() {
+        if (LLevel.fetch_data("door_keycode") && LLevel.fetch_data("has_key")) {
+            this.linked_overlay = L2e_open_door;
+            LLevel.loaded_room.scene_data = [
+                { type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/a3hns7bajccqozx/L2e.png' },
+                { type: "text", location: [0, 128], text: "Opened!", font: "20pt Consolas" }
+            ];
+        }
     });
-    const Level2 = new Level('L2', new Grid([1, 1], [
-        [L2e]
-    ]), pos = [0, 0]);
+    const L2r = new Room('Lv2_right', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/37ofy89jpcayi40/L2r.png'
+    }], {
+        '[0,0,50,HEIGHT]': 'LLevel.update();LLevel.loaded_room.display();',
+        '[85,300,200,340]': 'this.local_data["left_cush"]=true;',
+        '[200,300,310,340]': 'this.local_data["right_cush"]=true;if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
+        '[205,400,315,500]': 'LLevel.loaded_room.linked_overlay.scene_data=[];'
+    }, local_data = { left_cush: false, right_cush: false }, function __check_cushions() {
+        if (this.local_data['left_cush'] == true && this.local_data['right_cush'] == true) {
+            LLevel.loaded_room.linked_overlay.scene_data.push({
+                type: 'web_image',
+                url: 'https://dl.dropboxusercontent.com/s/0ccbtoafaken0cw/L2r_both-cushions--clipped_overlay.png',
+                location: [0, 195],
+                set_size: [400, 226]
+            });
+        } else if (this.local_data['left_cush'] == true) {
+            LLevel.loaded_room.linked_overlay.scene_data.push({
+                type: 'web_image',
+                url: 'https://dl.dropboxusercontent.com/s/p4guunn9rbzz9ri/L2r_left-cushion--clipped_overlay.png',
+                location: [0, 194],
+                set_size: [398, 202]
+            });
+        } else if (this.local_data['right_cush'] == true) {
+            LLevel.loaded_room.linked_overlay.scene_data.push({
+                type: 'web_image',
+                url: 'https://dl.dropboxusercontent.com/s/qr6sz7akwtvyzcx/L2r_right-cushion--clipped_overlay.png',
+                location: [0, 194],
+                set_size: [400, 203]
+            });
+        } else {
+            LLevel.loaded_room.linked_overlay.scene_data = [{}];
+        }
+    }, function() {
+        __check_cushions();
+    }, new Room('L2r_overlay', []));
+    const L2l = new Room('Lv2_left', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/8m5xft1d6a10gjr/L2l.png'
+    }], {
+        '[80,195,315,420]': 'if(LLevel.fetch_data("open_safe")==true){LLevel.update(1,2);}else{LLevel.update(1,1);}',
+        '[350,0,400,500]': 'LLevel.update();//LLevel.loaded_room.display();'
+    });
+    const L2e_open_door = new Room('Lv2_open-door_overlay', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
+        location: [30, 153],
+        set_size: [200, 300]
+    }]);
+    const L2r_safe_open = new Room('Lv2_safe-open_overlay', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
+        location: [0, 104],
+        set_size: [360, 365]
+    }]);
+    const L2l_safe_closeup = new Room('Lv2_safe-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
+        },
+        { type: 'text', location: [88, 215], text: '1   2   3' },
+        { type: 'text', location: [88, 260], text: '4   5   6' },
+        { type: 'text', location: [88, 303], text: '7   8   9' },
+        { type: 'text', location: [174, 350], text: '0' }
+    ], {
+        '[70,175,132,222]': 'this.local_data["cur_pass"].push(1);', //1
+        '[132,175,225,222]': 'this.local_data["cur_pass"].push(2);', //2
+        '[225,175,300,222]': 'this.local_data["cur_pass"].push(3);', //3
+        '[70,222,132,270]': 'this.local_data["cur_pass"].push(4);', //4
+        '[132,222,225,270]': 'this.local_data["cur_pass"].push(5);', //5
+        '[225,222,300,270]': 'this.local_data["cur_pass"].push(6);', //6
+        '[70,270,132,310]': 'this.local_data["cur_pass"].push(7);', //7
+        '[132,270,225,310]': 'this.local_data["cur_pass"].push(8);', //8
+        '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
+        '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
+    }, local_data = { correct_pass: [7, 3, 4], cur_pass: [] }, on_update = function() {
+        if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = [];
+                LLevel.push_data('open_safe', true);
+                LLevel.update(0, 2);
+                LLevel.loaded_room.linked_overlay = L2r_safe_open;
+            } else { this.local_data['cur_pass'] = []; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    });
+    const L2l_safe_inside = new Room('Lv2_safe-inside', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png',
+    }], {
+        '[160,320,309,393]': 'LLevel.update(1,3);',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1)'
+    }, {}, function() {}, function() {}, new Room('Lv2_safe-paper', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png',
+        location: [160, 320],
+        set_size: [149, 73]
+    }]));
+    const L2l_paper_closeup = new Room('Lv2_paper-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
+        },
+        { type: 'text', location: [135, 250], text: '5̴̡̙̹̓͋̇̿͜9̸̧̜́̏̀͝3̵̢̭̜̅̋͠', font: '45pt Consolas' }
+    ], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);'
+    });
+    const L2e_combo_closeup = new Room('Lv2_combo-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/2x8khq5cn4xztnt/3-number_combo_lock--closeup_overlay.png'
+    }], {
+        '[70,200,120,300]': 'this.local_data["cur_pass"][0]=parseInt(prompt("Enter number for slot 1: "));',
+        '[170,200,230,300]': 'this.local_data["cur_pass"][1]=parseInt(prompt("Enter number for slot 2: "));',
+        '[300,200,340,300]': 'this.local_data["cur_pass"][2]=parseInt(prompt("Enter number for slot 3: "));',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update();'
+    }, local_data = { correct_pass: [5, 9, 3], cur_pass: [null, null, null] }, on_update = function() {
+        if (all_same_type(this.local_data['cur_pass'].concat(this.local_data['correct_pass']))) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = [null, null, null];
+                LLevel.push_data('door_keycode', true);
+                LLevel.update();
+            } else { this.local_data['cur_pass'] = [null, null, null]; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    });
+    const Level2 = new Level('L2', new Grid([2, 4], [
+        [L2e, L2r, L2l, undefined],
+        [L2e_combo_closeup, L2l_safe_closeup, L2l_safe_inside, L2l_paper_closeup]
+    ]), pos = [0, 0], { open_safe: false, door_keycode: false, has_key: false });
+    //MARK: Level 3 stuff
     const L3e = new Room('Lv3_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/8a0ff0269c38c322e4dd54928a37e1e8'
