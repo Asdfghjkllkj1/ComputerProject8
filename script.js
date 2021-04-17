@@ -141,7 +141,7 @@ window.onload = function() {
             ];
         }
     });
-    const L1e_open_door = new Room('Lv1_open-door_overlay', [{
+    const L1e_open_door = new Room('Lv1_open-door', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
         location: [45, 150],
@@ -175,7 +175,7 @@ window.onload = function() {
         location: [210, 270],
         set_size: [149, 73]
     }]))
-    const L1r_safe_open = new Room('Lv1_safe-open_overlay', [{
+    const L1r_safe_open = new Room('Lv1_safe-open', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
         location: [0, 104],
@@ -277,13 +277,13 @@ window.onload = function() {
         '[80,195,315,420]': 'if(LLevel.fetch_data("open_safe")==true){LLevel.update(1,2);}else{LLevel.update(1,1);}',
         '[350,0,400,500]': 'LLevel.update();//LLevel.loaded_room.display();'
     });
-    const L2e_open_door = new Room('Lv2_open-door_overlay', [{
+    const L2e_open_door = new Room('Lv2_open-door', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
         location: [30, 153],
         set_size: [200, 300]
     }]);
-    const L2r_safe_open = new Room('Lv2_safe-open_overlay', [{
+    const L2r_safe_open = new Room('Lv2_safe-open', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
         location: [0, 104],
@@ -371,8 +371,23 @@ window.onload = function() {
         '[0,0,50,HEIGHT]': 'LLevel.update(0,1);',
         '[250,100,395,275]': 'if(LLevel.fetch_data("l3e_safe")==false){LLevel.update(2,2);}else{LLevel.update(2,0);}',
         '[250,345,370,400]': 'LLevel.update(4,0);',
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[25,35,235,120]': 'LLevel.update(3,0);',
+        '[30,160,230,400]': 'if(LLevel.fetch_data("has_key")==true&&LLevel.fetch_data("door_keycode")==true){LLevel=LevelStart;LLevel.update(0,1);}'
+    }, {}, function() {}, function() {
+        if (LLevel.fetch_data("door_keycode") == true && LLevel.fetch_data("has_key") == true) {
+            this.linked_overlay = L3e_open_door;
+            LLevel.loaded_room.scene_data = [
+                { type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/o1h61u928qzzpzl/L3e.png' },
+                { type: "text", location: [30, 470], text: "Opened!", font: "20pt Consolas" }
+            ];
+        }
     });
+    const L3e_open_door = new Room('Lv3_open-door', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
+        location: [30, 153],
+        set_size: [200, 300]
+    }]);
     const L3l = new Room('Lv3_left', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/qgsu3nqibof8v6h/L3l.png'
@@ -387,11 +402,27 @@ window.onload = function() {
         '[35,10,150,110]': 'LLevel.update(1,1);',
         '[0,0,50,HEIGHT]': 'LLevel.update();'
     });
-    const L3e_paper_closeup = new Room('Lv3_paper-closeup', [{
+    const L3e_paper_closeup = new Room('Lv3entrance_paper-closeup', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
         },
         { type: 'text', location: [135, 250], text: '5̶͚̘̂̓9̵̡̤͐̍4̸̥̰̊̈́9̵͔̄', font: '45pt Consolas' }
+    ], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update();'
+    });
+    const L3r_paper_closeup = new Room('Lv3right_paper-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
+        },
+        { type: 'text', location: [135, 250], text: '3̴̫̫̩͙̙̊̂7̶̔̈ͅ6̷̛̰͌9̶͇̻͉̍̚͘͝', font: '45pt Consolas' }
+    ], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
+    });
+    const L3e_safe_paper_closeup = new Room('Lv3entrance-safe_paper-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
+        },
+        { type: 'text', location: [135, 250], text: '1̶̛̥̑̔̍̕8̸̡̖̣͕̓̀̕3̴̞̬̚7̵̰̮̀̏͘', font: '45pt Consolas' }
     ], {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update();'
     });
@@ -409,12 +440,43 @@ window.onload = function() {
         '[25,130,370,390]': 'if(LLevel.fetch_data("has_battery")==true){LLevel.push_data("wood_door_open", true);LLevel.update(1,2);}else{alert("The motor doesn\'t have batteries!");}',
         '[0,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("wood_door_open")==false){LLevel.update(0,2);}else{LLevel.update(1,2);}'
     });
+    const L3e_combo_closeup = new Room('Lv3_combo-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/8dcppakp0b5wozh/4-number_combo_lock--closeup_overlay.png?dl=0'
+    }], {
+        '[25,210,90,320]': 'this.local_data["cur_pass"][0]=parseInt(prompt("Enter number for slot 1: "));',
+        '[120,210,190,320]': 'this.local_data["cur_pass"][1]=parseInt(prompt("Enter number for slot 2: "));',
+        '[220,210,290,320]': 'this.local_data["cur_pass"][2]=parseInt(prompt("Enter number for slot 3: "));',
+        '[320,210,370,320]': 'this.local_data["cur_pass"][3]=parseInt(prompt("Enter number for slot 4: "));',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update()'
+    }, local_data = { correct_pass: [3, 7, 6, 9], cur_pass: [null, null, null, null] }, on_update = function() {
+        if (all_same_type(this.local_data['cur_pass'].concat(this.local_data['correct_pass']))) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = [null, null, null, null];
+                LLevel.push_data('door_keycode', true);
+                LLevel.update();
+            } else { this.local_data['cur_pass'] = [null, null, null, null]; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    })
     const L3r_safe_inside = new Room('Lv3right_safe-inside', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png'
+    }, {
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png?dl=0',
+        location: [68, 290],
+        set_size: [110, 50]
     }], {
+        '[68,290,178,340]': 'LLevel.update(4,1);',
+        '[170,270,319,343]': 'if(LLevel.fetch_data("has_key")==false){LLevel.push_data("has_key",true);LLevel.loaded_room.linked_overlay=null;}',
         '[0,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("wood_door_open")==false){LLevel.update(0,2);}else{LLevel.update(1,2);}'
-    });
+    }, {}, function() {}, function() {}, new Room('Lv3right_key', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+        location: [170, 270],
+        set_size: [149, 73]
+    }]));
     const L3r_safe_closeup = new Room('Lv3right_safe-closeup', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
@@ -451,13 +513,19 @@ window.onload = function() {
         url: 'https://dl.dropboxusercontent.com/s/l441qr7jhtls9it/L1r_overlay--open_safe--cropped.png',
         location: [72, 228],
         set_size: [253, 270]
-    }])
+    }]);
     const L3e_safe_inside = new Room('Lv3entrance_safe-inside', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png',
         location: [0, -50],
         set_size: [WIDTH, HEIGHT + 50]
+    }, {
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png?dl=0',
+        location: [68, 290],
+        set_size: [110, 50]
     }], {
+        '[75,292,177,335]': 'LLevel.update(4,2);',
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update();'
     });
     const L3e_safe_closeup = new Room('Lv3entrance_safe-closeup', [{
@@ -550,9 +618,9 @@ window.onload = function() {
         [L3e, L3l, L3r],
         [L3r_safe_inside, L3r_motor_closeup, L3r_open],
         [L3e_safe_inside, L3r_safe_closeup, L3e_safe_closeup],
-        [L3e_safe_open, L3l_safe_inside, L3l_safe_closeup],
-        [L3e_paper_closeup, undefined, undefined]
-    ]), pos = [0, 0], { wood_door_open: false, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
+        [L3e_combo_closeup, L3l_safe_inside, L3l_safe_closeup],
+        [L3e_paper_closeup, L3r_paper_closeup, L3e_safe_paper_closeup]
+    ]), pos = [0, 0], { wood_door_open: true, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
     //MARK: Level 4 stuff
     const L4e = new Room('Lv4_entrance', [{
         type: 'web_image',
