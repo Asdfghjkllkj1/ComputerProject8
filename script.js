@@ -382,7 +382,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/8a0ff0269c38c322e4dd54928a37e1e8'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level3 = new Level('L3', new Grid([1, 1], [
         [L3e]
@@ -391,7 +391,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/3f668e244b2c250c27b96f41d8494c07'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level4 = new Level('L4', new Grid([1, 1], [
         [L4e]
@@ -400,7 +400,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/423a283535121945fcdc926c85febd0e'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level5 = new Level('L5', new Grid([1, 1], [
         [L5e]
@@ -409,7 +409,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/3ce76bc733da05177532fbd004dd250d'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level6 = new Level('L6', new Grid([1, 1], [
         [L6e]
@@ -418,7 +418,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/fe193d750c155a8d367b45ee5537b916'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level7 = new Level('L7', new Grid([1, 1], [
         [L7e]
@@ -427,7 +427,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://codehs.com/uploads/779ee02bf2672c86766750985b3db283'
     }], {
-        '[0,0,getWidth(),getHeight()]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
     });
     const Level8 = new Level('L8', new Grid([1, 1], [
         [L8e]
