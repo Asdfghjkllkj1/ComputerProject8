@@ -201,14 +201,15 @@ window.onload = function() {
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
-    }, local_data = { correct_pass: [3, 8, 4, 6], cur_pass: [] }, on_update = function() {
+    }, local_data = { correct_pass: [3, 8, 4, 6], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
         if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('open_safe', true);
                 LLevel.update(0, 1);
                 LLevel.loaded_room.linked_overlay = L1r_safe_open;
-            } else { this.local_data['cur_pass'] = []; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -224,7 +225,7 @@ window.onload = function() {
         '[350,0,400,500]': 'LLevel.update(0,1);',
         '[240,210,390,310]': 'LLevel.update(1,0);',
         '[0,0,50,HEIGHT]': 'LLevel.update(0,2);',
-        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")&&LLevel.fetch_data("has_key")){LLevel=LevelStart; Level.update(0,1);}'
+        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){setTimeout(function(){LLevel=LevelStart; Level.update(0,1);}, 500);}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("door_keycode") && LLevel.fetch_data("has_key")) {
             this.linked_overlay = L2e_open_door;
@@ -309,14 +310,15 @@ window.onload = function() {
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
-    }, local_data = { correct_pass: [7, 3, 4], cur_pass: [] }, on_update = function() {
+    }, local_data = { correct_pass: [7, 3, 4], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
         if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('open_safe', true);
                 LLevel.update(0, 2);
                 LLevel.loaded_room.linked_overlay = L2r_safe_open;
-            } else { this.local_data['cur_pass'] = []; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -348,13 +350,14 @@ window.onload = function() {
         '[170,200,230,300]': 'this.local_data["cur_pass"][1]=parseInt(prompt("Enter number for slot 2: "));',
         '[300,200,340,300]': 'this.local_data["cur_pass"][2]=parseInt(prompt("Enter number for slot 3: "));',
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update();'
-    }, local_data = { correct_pass: [5, 9, 3], cur_pass: [null, null, null] }, on_update = function() {
+    }, local_data = { correct_pass: [5, 9, 3], cur_pass: [null, null, null], blank_pass: [null, null, null] }, on_update = function() {
+        this.local_data['blank_pass'] = [null, null, null];
         if (all_same_type(this.local_data['cur_pass'].concat(this.local_data['correct_pass']))) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [null, null, null];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('door_keycode', true);
                 LLevel.update();
-            } else { this.local_data['cur_pass'] = [null, null, null]; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -449,16 +452,17 @@ window.onload = function() {
         '[220,210,290,320]': 'this.local_data["cur_pass"][2]=parseInt(prompt("Enter number for slot 3: "));',
         '[320,210,370,320]': 'this.local_data["cur_pass"][3]=parseInt(prompt("Enter number for slot 4: "));',
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update()'
-    }, local_data = { correct_pass: [3, 7, 6, 9], cur_pass: [null, null, null, null] }, on_update = function() {
+    }, local_data = { correct_pass: [3, 7, 6, 9], cur_pass: [null, null, null, null], blank_pass: [null, null, null, null] }, on_update = function() {
+        this.local_data['blank_pass'] = [null, null, null, null];
         if (all_same_type(this.local_data['cur_pass'].concat(this.local_data['correct_pass']))) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [null, null, null, null];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('door_keycode', true);
                 LLevel.update();
-            } else { this.local_data['cur_pass'] = [null, null, null, null]; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
-    })
+    });
     const L3r_safe_inside = new Room('Lv3right_safe-inside', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png'
@@ -497,14 +501,15 @@ window.onload = function() {
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,2);' //put this last so the update order gets to the numpad first
-    }, local_data = { correct_pass: [1, 8, 3, 7], cur_pass: [] }, on_update = function() {
+    }, local_data = { correct_pass: [1, 8, 3, 7], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
         if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('l3r_safe', true);
                 LLevel.update(1, 2);
                 LLevel.loaded_room.linked_overlay = L3r_safe_open;
-            } else { this.local_data['cur_pass'] = []; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -548,14 +553,15 @@ window.onload = function() {
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update();' //put this last so the update order gets to the numpad first
-    }, local_data = { correct_pass: [1, 0, 3, 7], cur_pass: [] }, on_update = function() {
+    }, local_data = { correct_pass: [1, 0, 3, 7], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
         if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('l3e_safe', true);
                 LLevel.update();
                 LLevel.loaded_room.linked_overlay = L3e_safe_open;
-            } else { this.local_data['cur_pass'] = []; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -597,14 +603,15 @@ window.onload = function() {
         '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
         '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);' //put this last so the update order gets to the numpad first
-    }, local_data = { correct_pass: [5, 9, 4, 9], cur_pass: [] }, on_update = function() {
+    }, local_data = { correct_pass: [5, 9, 4, 9], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
         if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
             if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
-                this.local_data['cur_pass'] = [];
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
                 LLevel.push_data('l3l_safe', true);
                 LLevel.update(0, 1);
                 LLevel.loaded_room.linked_overlay = L3l_safe_open;
-            } else { this.local_data['cur_pass'] = []; }
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
         changeHTML('text3', this.local_data['cur_pass']);
     });
@@ -632,15 +639,216 @@ window.onload = function() {
         [L4e]
     ]), pos = [0, 0]);
     //MARK: Level 5 stuff
-    const L5e = new Room('Lv5_entrance', [{
+    const L5e = new Room('Lv5_entrance', [{ //FOR DOOR: MUST USE UNSHIFT INSTEAD OF PUSH BECAUSE OF KEY CLICK DETECTION
         type: 'web_image',
-        url: 'https://codehs.com/uploads/423a283535121945fcdc926c85febd0e'
+        url: 'https://dl.dropboxusercontent.com/s/cn4fk2lyx4b46e5/L5e.png'
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
+        '[100,55,250,125]': 'if(this.local_data["open_sign"]==true&&LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_bulletin_key", true);}', //HERE IS WHY UNSHIFT MUST BE USED
+        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "https://dl.dropboxusercontent.com/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
+        '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}'
+    }, { open_sign: false }, function() {}, function() {
+        if (LLevel.fetch_data('has_key') == true) {
+            LLevel.loaded_room.linked_overlay.scene_data.push({
+                type: 'web_image',
+                url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
+                location: [30, 153],
+                set_size: [200, 301]
+            });
+            LLevel.loaded_room.scene_data.push({ type: "text", location: [30, 480], text: "Opened!", font: "20pt Consolas" });
+        }
+    }, new Room('Lv5_entrance-overlay', [{}]));
+    const L5r = new Room('Lv5_right', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/kpaja16aqpm4jnw/L5r.png'
+    }], {
+        '[0,0,50,HEIGHT]': 'LLevel.update();',
+        '[350,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);',
+        '[175,230,215,275]': 'if(LLevel.fetch_data("has_bulletin_key")==true){LLevel.update(2,0);LLevel.push_data("bulletin", false);}'
     });
-    const Level5 = new Level('L5', new Grid([1, 1], [
-        [L5e]
-    ]), pos = [0, 0]);
+    const L5r_open = new Room('Lv5_right--no-bulletin', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/wkmcd4f4al674re/L5r_no-bulletin.png'
+    }], {
+        '[115,55,315,190]': 'if(LLevel.fetch_data("top_l5r_safe")==false){LLevel.update(2,2);}else{LLevel.update(3,0);}',
+        '[130,200,300,400]': 'if(LLevel.fetch_data("has_bottomsafe_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({ type: "web_image", url: "https://dl.dropboxusercontent.com/s/nte37zh5dl88vkl/L5r_bottom-open--overlay.png", location: [0, 197], set_size: [400, 303] });LLevel.push_data("bottom_l5r_safe",true);LLevel.push_data("has_bottomsafe_key", false);}else if(LLevel.fetch_data("bottom_l5r_safe")==true){LLevel.update(1,1);}',
+        '[0,290,90,400]': 'LLevel.update(3,1);',
+        '[335,215,400,295]': 'LLevel.update(3,2);',
+        '[350,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);',
+        '[0,0,50,HEIGHT]': 'LLevel.update();'
+    }, {}, function() {}, function() {}, new Room('Lv5right_overlay', [{}]));
+    const L5r_topsafe_closeup = new Room('Lv5right_top-safe-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/v77z2m0y5fu7bts/closed_safe--closeup.png'
+        },
+        { type: 'text', location: [88, 215], text: '1   2   3' },
+        { type: 'text', location: [88, 260], text: '4   5   6' },
+        { type: 'text', location: [88, 303], text: '7   8   9' },
+        { type: 'text', location: [174, 350], text: '0' }
+    ], {
+        '[70,175,132,222]': 'this.local_data["cur_pass"].push(1);', //1
+        '[132,175,225,222]': 'this.local_data["cur_pass"].push(2);', //2
+        '[225,175,300,222]': 'this.local_data["cur_pass"].push(3);', //3
+        '[70,222,132,270]': 'this.local_data["cur_pass"].push(4);', //4
+        '[132,222,225,270]': 'this.local_data["cur_pass"].push(5);', //5
+        '[225,222,300,270]': 'this.local_data["cur_pass"].push(6);', //6
+        '[70,270,132,310]': 'this.local_data["cur_pass"].push(7);', //7
+        '[132,270,225,310]': 'this.local_data["cur_pass"].push(8);', //8
+        '[225,270,300,310]': 'this.local_data["cur_pass"].push(9);', //9
+        '[132,310,225,363]': 'this.local_data["cur_pass"].push(0);', //0
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(2,0);' //put this last so the update order gets to the numpad first
+    }, local_data = { correct_pass: [4, 2, 0], cur_pass: [], blank_pass: [] }, on_update = function() {
+        this.local_data['blank_pass'] = [];
+        if (this.local_data['cur_pass'].length >= this.local_data['correct_pass'].length) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
+                LLevel.push_data('top_l5r_safe', true);
+                LLevel.update(2, 0);
+                LLevel.loaded_room.linked_overlay.scene_data.push({
+                    type: 'web_image',
+                    url: 'https://dl.dropboxusercontent.com/s/f5uisdv3eci4r3w/L5r_top-open--overlay.png',
+                    set_size: [399, 192]
+                }); // because other safe needs too
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    });
+    const L5r_topsafe_inside = new Room('Lv5right_top-safe-inside', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/w4iuqsdzwmhx6gl/safe_inside.png'
+    }], {
+        '[170,270,319,343]': 'LLevel.push_data("has_bottomsafe_key", true);LLevel.loaded_room.linked_overlay=null;',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(2,0);'
+    }, {}, function() {}, function() {}, new Room('Lv5right_top-safe-inside-overlay', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+        location: [170, 270],
+        set_size: [149, 73]
+    }]));
+    const L5r_stickynote_left_closeup = new Room('Lv5right_sticky-note_left', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/qvrorheto5wp93k/sticky_note-green-closeup.png'
+    }, { type: 'text', location: [50, 250], text: '7872 South Rd.' }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(2,0);'
+    });
+    const L5r_stickynote_right_closeup = new Room('Lv5right_sticky-note_right', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/iuu8rjudkagk0lx/sticky_note-yellow-closeup.png'
+    }, { type: 'text', location: [50, 250], text: '72 Creek Drive' }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(2,0);'
+    });
+    const L5rr = new Room('Lv5_right2', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/q4gpdoj1nobssl9/L5rr.png'
+    }], {
+        '[0,0,50,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
+        '[215,0,325,90]': 'if(LLevel.fetch_data("popped_balloon")==false){LLevel.update(5,1);}else{LLevel.update(5,2);}',
+        '[245,400,394,473]': 'if(LLevel.fetch_data("popped_balloon")==true&&LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_key", true);}',
+        '[0,430,115,480]': 'LLevel.update(2,1);'
+    }, {}, function() {}, function() {
+        if (LLevel.fetch_data("popped_balloon") == true) { LLevel.loaded_room.linked_overlay.scene_data.push({ type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png', location: [245, 400], set_size: [149, 73] }) }
+    }, new Room('Lv5right2_overlay', [{}]));
+    const L5rr_paper_closeup = new Room('Lv5right2_paper-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
+    }, { type: 'text', location: [135, 250], text: '4̴̡̭̦͎̑̍̅̓͘͜2̵̨̲̞̦̔̓0̸̢̙͗̌̂́͒', font: '45pt Consolas' }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);'
+    });
+    const L5rr_balloons_closeup = new Room('Lv5right2_balloons-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/gn01fuyaxb3em2p/L5rr_with-balloon-closeup.png'
+    }], {
+        '[0,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("has_needle")==true){LLevel.update(5,2);LLevel.push_data("popped_balloon",true);}{LLevel.update(0,2);}'
+    });
+    const L5rr_balloons_closeup_no_red = new Room('Lv5right2_balloons_closeup_no-red', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/7q7mfdgss480adz/L5rr_no-balloon-closeup.png'
+    }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);'
+    });
+    const L5eS1 = new Room('Lv5_entrance-sub1', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/n9lqypl2yum39du/L5e_sub1.png'
+    }], {
+        '[115,200,300,460]': 'if(LLevel.fetch_data("has_lectern_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/92dwogyy16rr26o/L5e_sub1_no-chain--overlay.jpg", location: [0,193], set_size: [400,307]});LLevel.update(4,1);}',
+        '[260,80,360,160]': 'if(LLevel.fetch_data("has_needle")==false){LLevel.update(4,2);}else{LLevel.update(5,0);}',
+        '[350,0,WIDTH,HEIGHT]': 'LLevel.update(1,1);'
+    }, {}, function() {}, function() {}, new Room('L5entrance-sub1_overlay', [{}]));
+    const L5eS1_torch_closeup = new Room('Lv5entrance-sub1_torch-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/ekk22yx47khipmm/torch-closeup.jpg'
+    }], {
+        '[45,215,365,280]': 'LLevel.push_data("has_needle",true);alert("You took off a bar from the torch as a needle! ");LLevel.update(5,0);',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
+    }, {}, function() {}, function() {}, new Room('L5eS1_torch-closeup_overlay', [{}]));
+    const L5eS1_torch_closeup_no_needle = new Room('Lv5entrance-sub1_torch-closeup--no-needle', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/o3eiemh5r3l2g0h/blank_wall_dungeon.png'
+    }, { type: "web_image", url: "https://dl.dropboxusercontent.com/s/stxdue1n29w05vg/fire_minus-wire.png" }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
+    });
+    const L5eS1_lectern_closeup = new Room('Lv5entrance-sub1_lectern-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png'
+    }], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
+    });
+    const L5rS1 = new Room('Lv5_right-sub1', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/es5ulu8mn9wje0d/L5r_sub1.png'
+    }], {
+        '[130,195,300,400]': 'LLevel.update(2,0);',
+        '[350,0,WIDTH,HEIGHT]': 'LLevel.update(1,2);',
+        '[0,0,50,HEIGHT]': 'LLevel.update(1,0);'
+    });
+    const L5rrS1 = new Room('Lv5_right2-sub1', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/hjn9ayf7hqlydpr/L5rr_sub1.png'
+    }], {
+        '[130,400,280,460]': 'if(LLevel.fetch_data("bottom_chest")==false){LLevel.update(4,0);}',
+        '[255,430,405,500]': 'if(LLevel.fetch_data("has_lectern_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_lectern_key",true);}',
+        '[0,0,50,HEIGHT]': 'LLevel.update(1,1);'
+    }, {}, function() {}, function() {}, new Room('Lv5right2-sub1_overlay', [{}]));
+    const L5rrS1_chest_closeup = new Room('Lv5right2-sub1_chest-closeup', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/s2dti88axmykqem/L5rr_sub1_chest-closeup.png'
+    }], {
+        '[25,210,90,320]': 'this.local_data["cur_pass"][0]=parseInt(prompt("Enter number for slot 1: "));',
+        '[120,210,190,320]': 'this.local_data["cur_pass"][1]=parseInt(prompt("Enter number for slot 2: "));',
+        '[220,210,290,320]': 'this.local_data["cur_pass"][2]=parseInt(prompt("Enter number for slot 3: "));',
+        '[320,210,370,320]': 'this.local_data["cur_pass"][3]=parseInt(prompt("Enter number for slot 4: "));',
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,2);'
+    }, local_data = { correct_pass: [7, 8, 7, 2], cur_pass: [null, null, null, null], blank_pass: [null, null, null, null] }, on_update = function() {
+        this.local_data['blank_pass'] = [null, null, null, null];
+        if (all_same_type(this.local_data['cur_pass'].concat(this.local_data['correct_pass']))) {
+            if (equals(this.local_data['cur_pass'], this.local_data['correct_pass'])) {
+                this.local_data['cur_pass'] = this.local_data['blank_pass'];
+                LLevel.push_data('bottom_chest', true);
+                LLevel.update(1, 2);
+                LLevel.loaded_room.linked_overlay.scene_data.push({
+                    type: 'web_image',
+                    url: 'https://dl.dropboxusercontent.com/s/5lt5h782sn3gicj/L5rr_sub1_open-chest--overlay.png',
+                    location: [0, 286],
+                    set_size: [400, 214]
+                });
+                LLevel.loaded_room.linked_overlay.scene_data.push({
+                    type: 'web_image',
+                    url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+                    location: [255, 430],
+                    set_size: [150, 70]
+                });
+            } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
+        }
+        changeHTML('text3', this.local_data['cur_pass']);
+    });
+    const Level5 = new Level('L5', new Grid([6, 3], [
+        [L5e, L5r, L5rr],
+        [L5eS1, L5rS1, L5rrS1],
+        [L5r_open, L5rr_paper_closeup, L5r_topsafe_closeup],
+        [L5r_topsafe_inside, L5r_stickynote_left_closeup, L5r_stickynote_right_closeup],
+        [L5rrS1_chest_closeup, L5eS1_lectern_closeup, L5eS1_torch_closeup],
+        [L5eS1_torch_closeup_no_needle, L5rr_balloons_closeup, L5rr_balloons_closeup_no_red]
+    ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false });
     //MARK: Level 6 stuff
     const L6e = new Room('Lv6_entrance', [{
         type: 'web_image',
