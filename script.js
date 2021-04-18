@@ -62,13 +62,6 @@ window.onload = function() {
             this.on_update(); //Depends on update order whether action_points or on_update should come first
         };
     }
-    //TODO: set up room objects for all rooms in game
-    //TODO: Change the need for "LLevel = __level-name__";   LLevel.update();" in action points for rooms
-    const blank_room = new Room('blank_room', [{
-        type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png',
-        set_size: [0, 0]
-    }]);
     //MARK: Start Room stuff
     const start_room = new Room('start_room', [{
             type: 'web_image',
@@ -78,7 +71,7 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [270, 500], text: 'v0.0.04pre-alpha', font: '11pt Consolas' }
+        { type: 'text', location: [270, 120], text: 'v0.0.04pre-alpha', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
         '[100,365,270,440]': 'LLevel.update(0,2);'
@@ -171,7 +164,7 @@ window.onload = function() {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(0,1)'
     }, {}, function() {}, function() {}, new Room('Lv1_safe-key', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+        url: 'https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png',
         location: [210, 270],
         set_size: [149, 73]
     }]))
@@ -241,7 +234,7 @@ window.onload = function() {
     }], {
         '[0,0,50,HEIGHT]': 'LLevel.update();LLevel.loaded_room.display();',
         '[85,300,200,340]': 'this.local_data["left_cush"]=true;',
-        '[200,300,310,340]': 'this.local_data["right_cush"]=true;if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
+        '[200,300,310,340]': 'this.local_data["right_cush"]=true;if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
         '[205,400,315,500]': 'LLevel.loaded_room.linked_overlay.scene_data=[];'
     }, local_data = { left_cush: false, right_cush: false }, function __check_cushions() {
         if (this.local_data['left_cush'] == true && this.local_data['right_cush'] == true) {
@@ -477,7 +470,7 @@ window.onload = function() {
         '[0,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("wood_door_open")==false){LLevel.update(0,2);}else{LLevel.update(1,2);}'
     }, {}, function() {}, function() {}, new Room('Lv3right_key', [{
         type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png',
+        url: 'https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png',
         location: [170, 270],
         set_size: [149, 73]
     }]));
@@ -741,12 +734,12 @@ window.onload = function() {
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/q4gpdoj1nobssl9/L5rr.png'
     }], {
-        '[0,0,50,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
         '[215,0,325,90]': 'if(LLevel.fetch_data("popped_balloon")==false){LLevel.update(5,1);}else{LLevel.update(5,2);}',
         '[245,400,394,473]': 'if(LLevel.fetch_data("popped_balloon")==true&&LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_key", true);}',
-        '[0,430,115,480]': 'LLevel.update(2,1);'
+        '[0,430,115,480]': 'LLevel.update(2,1);',
+        '[0,0,50,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}'
     }, {}, function() {}, function() {
-        if (LLevel.fetch_data("popped_balloon") == true) { LLevel.loaded_room.linked_overlay.scene_data.push({ type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png', location: [245, 400], set_size: [149, 73] }) }
+        if (LLevel.fetch_data("popped_balloon") == true) { LLevel.loaded_room.linked_overlay.scene_data.push({ type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png', location: [245, 400], set_size: [149, 73] }) }
     }, new Room('Lv5right2_overlay', [{}]));
     const L5rr_paper_closeup = new Room('Lv5right2_paper-closeup', [{
         type: 'web_image',
@@ -787,10 +780,22 @@ window.onload = function() {
     }, { type: "web_image", url: "https://dl.dropboxusercontent.com/s/stxdue1n29w05vg/fire_minus-wire.png" }], {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
     });
-    const L5eS1_lectern_closeup = new Room('Lv5entrance-sub1_lectern-closeup', [{
-        type: 'web_image',
-        url: 'https://dl.dropboxusercontent.com/s/sjw076sykqily7k/not_found.png'
-    }], {
+    const L5eS1_lectern_closeup = new Room('Lv5entrance-sub1_lectern-closeup', [
+        { type: 'text', location: [0, 14], text: 'opportuNities multiply as they arE seized.', font: '13pt Consolas' },
+        { type: 'text', location: [0, 34], text: 'Victorious warriors win first and thEn go', font: '13pt Consolas' },
+        { type: 'text', location: [0, 48], text: 'to war, while defeated warrioRs GO to war', font: '13pt Consolas' },
+        { type: 'text', location: [0, 62], text: 'first and theN seek to wiN.', font: '13pt Consolas' },
+        { type: 'text', location: [0, 82], text: 'All men can see these tactics whereby i', font: '13pt Consolas' },
+        { type: 'text', location: [0, 96], text: 'conquer, but what none can see is the', font: '13pt Consolas' },
+        { type: 'text', location: [0, 110], text: 'strateGy out of whIch Victory is Evolved.', font: '13pt Consolas' },
+        { type: 'text', location: [0, 130], text: 'regard YOUr soldiers as your children', font: '13pt Consolas' },
+        { type: 'text', location: [0, 144], text: 'and they will follow yoU into the', font: '13pt Consolas' },
+        { type: 'text', location: [0, 158], text: 'deePest valleys.', font: '13pt Consolas' },
+        { type: 'text', location: [0, 178], text: 'Sun Tzu, The Art of War', font: '13pt Consolas' },
+        { type: 'text', location: [0, 198], text: 'https://tinyurl.com/IMG2645', font: '13pt Consolas' },
+        { type: 'text', location: [0, 218], text: 'EASTER EGG', font: '13pt Consolas' },
+        { type: 'web_image', location: [50, 250], set_size: [175, 250], url: 'https://dl.dropboxusercontent.com/s/hfrrwisgc2clcja/the_art_of_war.png' }
+    ], {
         '[0,0,WIDTH,HEIGHT]': 'LLevel.update(1,0);'
     });
     const L5rS1 = new Room('Lv5_right-sub1', [{
