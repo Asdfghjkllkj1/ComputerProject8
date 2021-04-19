@@ -71,7 +71,7 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [270, 120], text: 'v0.0.04pre-alpha', font: '11pt Consolas' }
+        { type: 'text', location: [270, 120], text: 'v0.0.05pre-alpha', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
         '[100,365,270,440]': 'LLevel.update(0,2);'
