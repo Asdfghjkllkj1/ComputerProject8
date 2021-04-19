@@ -71,34 +71,26 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [270, 120], text: 'v0.0.04pre-alpha', font: '11pt Consolas' }
+        { type: 'text', location: [250, 120], text: 'v0.1.01beta-public', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
         '[100,365,270,440]': 'LLevel.update(0,2);'
     });
     const level_select = new Room('level_select', [{
             type: 'web_image',
-            url: 'https://dl.dropboxusercontent.com/s/bx4vsrex31dn9tx/levels.png'
+            url: 'https://dl.dropboxusercontent.com/s/fdpjanpndyvp5cc/levels%284%29.png'
         },
         { type: 'text', location: [70, 65], text: 'Level select' },
         { type: 'text', location: [277, 475], text: 'back' },
-        { type: 'text', location: [50, 140], text: 'L1' },
-        { type: 'text', location: [177, 140], text: 'L2' },
-        { type: 'text', location: [305, 140], text: 'L3' },
-        { type: 'text', location: [50, 250], text: 'L4' },
-        { type: 'text', location: [177, 250], text: 'L5' },
-        { type: 'text', location: [305, 250], text: 'L6' },
-        { type: 'text', location: [113, 357], text: 'L7' },
-        { type: 'text', location: [240, 357], text: 'L8' }
+        { type: 'text', location: [50, 175], text: 'L1' },
+        { type: 'text', location: [300, 175], text: 'L2' },
+        { type: 'text', location: [50, 290], text: 'L3' },
+        { type: 'text', location: [300, 290], text: 'L4' }
     ], {
-        '[31,85,125,167]': 'LLevel = Level1;  LLevel.update();',
-        '[153,85,250,165]': 'LLevel = Level2;  LLevel.update();',
-        '[282,85,375,164]': 'LLevel = Level3;  LLevel.update();',
-        '[30,195,124,277]': 'LLevel = Level4;  LLevel.update();',
-        '[152,200,250,280]': 'LLevel = Level5;  LLevel.update();',
-        '[280,200,375,270]': 'LLevel = Level6;  LLevel.update();',
-        '[90,300,185,380]': 'LLevel = Level7;  LLevel.update();',
-        '[220,300,310,380]': 'LLevel = Level8; LLevel.update();',
+        '[30,125,120,200]': 'LLevel = Level1;  LLevel.update();',
+        '[280,120,370,200]': 'LLevel = Level2;  LLevel.update();',
+        '[30,230,120,310]': 'LLevel = Level3;  LLevel.update();',
+        '[285,235,370,312]': 'LLevel = Level5;  LLevel.update();',
         '[255,425,395,495]': 'LLevel.update();'
     }, new Room('level_overlay'));
     const credits = new Room('credits', [{
@@ -218,7 +210,7 @@ window.onload = function() {
         '[350,0,400,500]': 'LLevel.update(0,1);',
         '[240,210,390,310]': 'LLevel.update(1,0);',
         '[0,0,50,HEIGHT]': 'LLevel.update(0,2);',
-        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){setTimeout(function(){LLevel=LevelStart; Level.update(0,1);}, 500);}'
+        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){LLevel=LevelStart; Level.update(0,1);}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("door_keycode") && LLevel.fetch_data("has_key")) {
             this.linked_overlay = L2e_open_door;
@@ -233,8 +225,8 @@ window.onload = function() {
         url: 'https://dl.dropboxusercontent.com/s/37ofy89jpcayi40/L2r.png'
     }], {
         '[0,0,50,HEIGHT]': 'LLevel.update();LLevel.loaded_room.display();',
-        '[85,300,200,340]': 'this.local_data["left_cush"]=true;',
-        '[200,300,310,340]': 'this.local_data["right_cush"]=true;if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
+        '[85,300,200,340]': 'this.local_data["left_cush ',
+        '[200,300,310,340]': 'this.local_data["right_cush if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
         '[205,400,315,500]': 'LLevel.loaded_room.linked_overlay.scene_data=[];'
     }, local_data = { left_cush: false, right_cush: false }, function __check_cushions() {
         if (this.local_data['left_cush'] == true && this.local_data['right_cush'] == true) {
@@ -621,16 +613,7 @@ window.onload = function() {
         [L3e_combo_closeup, L3l_safe_inside, L3l_safe_closeup],
         [L3e_paper_closeup, L3r_paper_closeup, L3e_safe_paper_closeup]
     ]), pos = [0, 0], { wood_door_open: false, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
-    //MARK: Level 4 stuff
-    const L4e = new Room('Lv4_entrance', [{
-        type: 'web_image',
-        url: 'https://codehs.com/uploads/3f668e244b2c250c27b96f41d8494c07'
-    }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
-    });
-    const Level4 = new Level('L4', new Grid([1, 1], [
-        [L4e]
-    ]), pos = [0, 0]);
+    //MARK: Level 4 stuff (Lv4 in public branch is Lv5 data)
     //MARK: Level 5 stuff
     const L5e = new Room('Lv5_entrance', [{ //FOR DOOR: MUST USE UNSHIFT INSTEAD OF PUSH BECAUSE OF KEY CLICK DETECTION
         type: 'web_image',
@@ -638,8 +621,8 @@ window.onload = function() {
     }], {
         '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
         '[100,55,250,125]': 'if(this.local_data["open_sign"]==true&&LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_bulletin_key", true);}', //HERE IS WHY UNSHIFT MUST BE USED
-        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "https://dl.dropboxusercontent.com/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
-        '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}'
+        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "https://dl.dropboxusercontent.com/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
+        '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}' //L4 completed = true for public
     }, { open_sign: false }, function() {}, function() {
         if (LLevel.fetch_data('has_key') == true) {
             LLevel.loaded_room.linked_overlay.scene_data.push({
@@ -854,36 +837,6 @@ window.onload = function() {
         [L5rrS1_chest_closeup, L5eS1_lectern_closeup, L5eS1_torch_closeup],
         [L5eS1_torch_closeup_no_needle, L5rr_balloons_closeup, L5rr_balloons_closeup_no_red]
     ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false });
-    //MARK: Level 6 stuff
-    const L6e = new Room('Lv6_entrance', [{
-        type: 'web_image',
-        url: 'https://codehs.com/uploads/3ce76bc733da05177532fbd004dd250d'
-    }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
-    });
-    const Level6 = new Level('L6', new Grid([1, 1], [
-        [L6e]
-    ]), pos = [0, 0]);
-    //MARK: Level 7 stuff
-    const L7e = new Room('Lv7_entrance', [{
-        type: 'web_image',
-        url: 'https://codehs.com/uploads/fe193d750c155a8d367b45ee5537b916'
-    }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
-    });
-    const Level7 = new Level('L7', new Grid([1, 1], [
-        [L7e]
-    ]), pos = [0, 0]);
-    //MARK: Level 8 stuff
-    const L8e = new Room('Lv8_entrance', [{
-        type: 'web_image',
-        url: 'https://codehs.com/uploads/779ee02bf2672c86766750985b3db283'
-    }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
-    });
-    const Level8 = new Level('L8', new Grid([1, 1], [
-        [L8e]
-    ]), pos = [0, 0]);
     LLevel = LevelStart;
     //MAIN LOOP
     LLevel.update()
