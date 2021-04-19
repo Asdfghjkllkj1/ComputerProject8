@@ -210,7 +210,7 @@ window.onload = function() {
         '[350,0,400,500]': 'LLevel.update(0,1);',
         '[240,210,390,310]': 'LLevel.update(1,0);',
         '[0,0,50,HEIGHT]': 'LLevel.update(0,2);',
-        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){LLevel=LevelStart; Level.update(0,1);}'
+        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){LLevel=LevelStart; Level.update(0,1);LLevel.loaded_room.display();}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("door_keycode") && LLevel.fetch_data("has_key")) {
             this.linked_overlay = L2e_open_door;
@@ -223,39 +223,41 @@ window.onload = function() {
     const L2r = new Room('Lv2_right', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/37ofy89jpcayi40/L2r.png'
-    }], {
+    }, {}], {
         '[0,0,50,HEIGHT]': 'LLevel.update();LLevel.loaded_room.display();',
-        '[85,300,200,340]': 'this.local_data["left_cush ',
-        '[200,300,310,340]': 'this.local_data["right_cush if(LLevel.fetch_data("has_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205,400], set_size: [110,100]});}LLevel.push_data("has_key", true);',
-        '[205,400,315,500]': 'LLevel.loaded_room.linked_overlay.scene_data=[];'
+        '[85,300,200,340]': 'this.local_data["left_cush"]=true;',
+        '[200,300,310,340]': 'this.local_data["right_cush"]=true;if(LLevel.fetch_data("has_key")==false){this.scene_data.push({ type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205, 400], set_size: [110, 100] });}',
+        '[205,400,315,500]': 'if(this.local_data["right_cush"]==true&&LLevel.fetch_data("has_key")==false){LLevel.push_data("has_key", true);this.scene_data.pop();}'
     }, local_data = { left_cush: false, right_cush: false }, function __check_cushions() {
+        var __both_cushions = {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/0ccbtoafaken0cw/L2r_both-cushions--clipped_overlay.png',
+            location: [0, 195],
+            set_size: [400, 226]
+        };
+        var __left_cushion = {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/p4guunn9rbzz9ri/L2r_left-cushion--clipped_overlay.png',
+            location: [0, 194],
+            set_size: [398, 202]
+        };
+        var __right_cushion = {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/qr6sz7akwtvyzcx/L2r_right-cushion--clipped_overlay.png',
+            location: [0, 194],
+            set_size: [400, 203]
+        };
+        var __key = { type: "web_image", url: "https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png", location: [205, 400], set_size: [110, 100] }
         if (this.local_data['left_cush'] == true && this.local_data['right_cush'] == true) {
-            LLevel.loaded_room.linked_overlay.scene_data.push({
-                type: 'web_image',
-                url: 'https://dl.dropboxusercontent.com/s/0ccbtoafaken0cw/L2r_both-cushions--clipped_overlay.png',
-                location: [0, 195],
-                set_size: [400, 226]
-            });
+            this.linked_overlay = new Room('L2r_overlay_both-cushions', [__both_cushions]);
         } else if (this.local_data['left_cush'] == true) {
-            LLevel.loaded_room.linked_overlay.scene_data.push({
-                type: 'web_image',
-                url: 'https://dl.dropboxusercontent.com/s/p4guunn9rbzz9ri/L2r_left-cushion--clipped_overlay.png',
-                location: [0, 194],
-                set_size: [398, 202]
-            });
+            this.linked_overlay = new Room('L2r_overlay_left-cushion', [__left_cushion]);
         } else if (this.local_data['right_cush'] == true) {
-            LLevel.loaded_room.linked_overlay.scene_data.push({
-                type: 'web_image',
-                url: 'https://dl.dropboxusercontent.com/s/qr6sz7akwtvyzcx/L2r_right-cushion--clipped_overlay.png',
-                location: [0, 194],
-                set_size: [400, 203]
-            });
-        } else {
-            LLevel.loaded_room.linked_overlay.scene_data = [{}];
+            this.linked_overlay = new Room('L2r_overlay_right-cushion', [__right_cushion]);
         }
     }, function() {
         __check_cushions();
-    }, new Room('L2r_overlay', []));
+    }, new Room('L2r_overlay', [{}]));
     const L2l = new Room('Lv2_left', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/8m5xft1d6a10gjr/L2l.png'
