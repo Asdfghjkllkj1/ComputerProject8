@@ -71,7 +71,7 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [250, 120], text: 'v0.1.01beta-public', font: '11pt Consolas' }
+        { type: 'text', location: [250, 120], text: 'v0.1.02beta-public', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
         '[100,365,270,440]': 'LLevel.update(0,2);'
@@ -623,7 +623,7 @@ window.onload = function() {
     }], {
         '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
         '[100,55,250,125]': 'if(this.local_data["open_sign"]==true&&LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_bulletin_key", true);}', //HERE IS WHY UNSHIFT MUST BE USED
-        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "https://dl.dropboxusercontent.com/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
+        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "https://dl.dropboxusercontent.com/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "https://dl.dropboxusercontent.com/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
         '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}' //L4 completed = true for public
     }, { open_sign: false }, function() {}, function() {
         if (LLevel.fetch_data('has_key') == true) {
@@ -725,7 +725,7 @@ window.onload = function() {
         '[0,0,50,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("popped_balloon") == true) { LLevel.loaded_room.linked_overlay.scene_data.push({ type: 'web_image', url: 'https://dl.dropboxusercontent.com/s/m8q3p8rjgi90iiz/key_exit.png', location: [245, 400], set_size: [149, 73] }) }
-    }, new Room('Lv5right2_overlay', [{}]));
+    }, new Room('Lv5right2_overlay', []));
     const L5rr_paper_closeup = new Room('Lv5right2_paper-closeup', [{
         type: 'web_image',
         url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
