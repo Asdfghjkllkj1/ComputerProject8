@@ -196,7 +196,7 @@ window.onload = function() {
                 LLevel.loaded_room.linked_overlay = L1r_safe_open;
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const Level1 = new Level('L1', new Grid([2, 3], [
         [L1e, L1r, null],
@@ -307,7 +307,7 @@ window.onload = function() {
                 LLevel.loaded_room.linked_overlay = L2r_safe_open;
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L2l_safe_inside = new Room('Lv2_safe-inside', [{
         type: 'web_image',
@@ -346,7 +346,7 @@ window.onload = function() {
                 LLevel.update();
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const Level2 = new Level('L2', new Grid([2, 4], [
         [L2e, L2r, L2l, undefined],
@@ -448,7 +448,7 @@ window.onload = function() {
                 LLevel.update();
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L3r_safe_inside = new Room('Lv3right_safe-inside', [{
         type: 'web_image',
@@ -498,7 +498,7 @@ window.onload = function() {
                 LLevel.loaded_room.linked_overlay = L3r_safe_open;
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L3r_safe_open = new Room('Lv3right_safe-open', [{
         type: 'web_image',
@@ -550,7 +550,7 @@ window.onload = function() {
                 LLevel.loaded_room.linked_overlay = L3e_safe_open;
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L3e_safe_open = new Room('Lv3entrance_safe-open', [{
         type: 'web_image',
@@ -600,7 +600,7 @@ window.onload = function() {
                 LLevel.loaded_room.linked_overlay = L3l_safe_open;
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L3l_safe_open = new Room('Lv3left_safe-open', [{
         type: 'web_image',
@@ -689,7 +689,7 @@ window.onload = function() {
                 }); // because other safe needs too
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const L5r_topsafe_inside = new Room('Lv5right_top-safe-inside', [{
         type: 'web_image',
@@ -829,7 +829,7 @@ window.onload = function() {
                 });
             } else { this.local_data['cur_pass'] = this.local_data['blank_pass']; }
         }
-        changeHTML('text3', this.local_data['cur_pass']);
+        changeHTML('text3', `current password: ${this.local_data['cur_pass']}`);
     });
     const Level5 = new Level('L5', new Grid([6, 3], [
         [L5e, L5r, L5rr],
@@ -853,12 +853,9 @@ window.onload = function() {
         if (LLevel.loaded_room.linked_overlay != undefined) {
             LLevel.loaded_room.linked_overlay.display(overlay = true);
         }
-        document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
-        changeHTML('text', LLevel.name);
-        changeHTML('text2', LLevel.pos);
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
-        changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
+        changeHTML('mouse_pos', `mouse pos: (${e.getX()}, ${e.getY()})`); // displays mouse current pos in h3
     }); // mouse pos display; mainly for debug
     //HTML Integration
     if (typeof start === 'function') {
