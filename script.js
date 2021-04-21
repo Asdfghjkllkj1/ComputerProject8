@@ -71,7 +71,7 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [250, 120], text: 'v0.1.03beta-public', font: '11pt Consolas' }
+        { type: 'text', location: [250, 120], text: 'v0.1.04beta-public', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel=LevelTutorial;LLevel.update();',
         '[100,365,270,440]': 'LLevel.update(0,2);'
@@ -79,9 +79,11 @@ window.onload = function() {
         var curr_time = 0;
         setTimer(function __start_room_timer() { // timer that controls easter egg
             curr_time++;
-            if (curr_time >= 500 && LLevel.fetch_data('easter_egg') == false) {
+            if (LLevel.fetch_data('easter_egg') == true) {
+                stopTimer(__start_room_timer);
+            } else if (curr_time >= 500 && LLevel.fetch_data('easter_egg') == false) {
                 alert('You found an easter egg!');
-                LLevel.update(0, 3);
+                stopTimer(__start_room_timer);
             }
         }, 1);
     });
