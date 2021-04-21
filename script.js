@@ -71,10 +71,19 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [250, 120], text: 'v0.1.02beta-public', font: '11pt Consolas' }
+        { type: 'text', location: [250, 120], text: 'v0.1.03beta-public', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel=LevelTutorial;LLevel.update();',
         '[100,365,270,440]': 'LLevel.update(0,2);'
+    }, {}, function() {}, function() {
+        var curr_time = 0;
+        setTimer(function __start_room_timer() { // timer that controls easter egg
+            curr_time++;
+            if (curr_time >= 500 && LLevel.fetch_data('easter_egg') == false) {
+                alert('You found an easter egg!');
+                LLevel.update(0, 3);
+            }
+        }, 1);
     });
     const level_select = new Room('level_select', [{
             type: 'web_image',
@@ -105,7 +114,7 @@ window.onload = function() {
     })
     const LevelStart = new Level('LStart', new Grid([1, 3], [
         [start_room, level_select, credits]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], { easter_egg: false });
     //MARK: Tutorial stuff
     const Lte = new Room('Tutorial_entrance', [{
             type: 'web_image',
@@ -896,7 +905,7 @@ window.onload = function() {
     ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false });
     LLevel = LevelStart;
     //MAIN LOOP
-    LLevel.update()
+    LLevel.update();
     LLevel.loaded_room.display();
     if (LLevel.loaded_room.linked_overlay != undefined) {
         LLevel.loaded_room.linked_overlay.display(overlay = true);
