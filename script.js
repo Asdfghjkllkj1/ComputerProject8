@@ -80,18 +80,10 @@ window.onload = function() {
         setTimer(function __start_room_timer() { // timer that controls easter egg
             curr_time++;
             if (curr_time >= 500 && LLevel.fetch_data('easter_egg') == false) {
+                alert('You found an easter egg!');
                 LLevel.update(0, 3);
-                stopTimer(__start_room_timer);
             }
         }, 1);
-    });
-    const start_room_easter_egg = new Room('start-room_easter-egg', [{
-        type: 'text',
-        location: [0, 14],
-        text: 'You found an easter egg!',
-        font: '15pt Consolas'
-    }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("easter_egg",true);LLevel.update();'
     });
     const level_select = new Room('level_select', [{
             type: 'web_image',
@@ -128,8 +120,8 @@ window.onload = function() {
     ], {
         '[255,425,400,500]': 'LLevel.update()'
     })
-    const LevelStart = new Level('LStart', new Grid([1, 4], [
-        [start_room, level_select, credits, start_room_easter_egg]
+    const LevelStart = new Level('LStart', new Grid([1, 3], [
+        [start_room, level_select, credits]
     ]), pos = [0, 0], { easter_egg: false });
     //MARK: Tutorial stuff
     const Lte = new Room('Tutorial_entrance', [{
