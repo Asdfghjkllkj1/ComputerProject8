@@ -73,7 +73,7 @@ window.onload = function() {
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
         { type: 'text', location: [250, 120], text: 'v0.1.02beta-public', font: '11pt Consolas' }
     ], {
-        '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel.update(0,1);',
+        '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel=LevelTutorial;LLevel.update();',
         '[100,365,270,440]': 'LLevel.update(0,2);'
     });
     const level_select = new Room('level_select', [{
@@ -106,15 +106,70 @@ window.onload = function() {
     const LevelStart = new Level('LStart', new Grid([1, 3], [
         [start_room, level_select, credits]
     ]), pos = [0, 0]);
-    //MARK: Level 1 stuff
-    const L1e = new Room('Lv1_entrance', [{
+    //MARK: Tutorial stuff
+    const Lte = new Room('Tutorial_entrance', [{
             type: 'web_image',
             url: 'https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png'
-        },
-        { type: 'text', location: [0, 450], text: 'Click near the edges to ', font: '20pt Consolas' },
-        { type: 'text', location: [0, 490], text: 'navigate through rooms!', font: '20pt Consolas' },
-        { type: 'text', location: [0, 128], text: 'Open this door!', font: '20pt Consolas' }
+        }, { type: 'text', location: [0, 450], text: 'Click near the edges of the ', font: '16pt Consolas' },
+        { type: 'text', location: [0, 490], text: 'screen to navigate through rooms!', font: '16pt Consolas' },
+        { type: 'text', location: [0, 128], text: 'Tutorial', font: '20pt Consolas' }
     ], {
+        '[350,0,WIDTH,HEIGHT]': 'LLevel.update(0,1);',
+        '[50,155,240,400]': 'if(LLevel.fetch_data("seen_paper")==true){this.local_data["completed"]=true;LLevel=LevelStart;LLevel.update(0,1);}'
+    }, { completed: false }, function() {}, on_load = function() {
+        if (this.local_data['completed'] == true) {
+            LLevel = LevelStart;
+            LLevel.update(0, 1);
+        } else if (LLevel.fetch_data('seen_paper') == true) {
+            this.linked_overlay = new Room('Tutorial-entrance_overlay', [{
+                type: 'web_image',
+                url: 'https://dl.dropboxusercontent.com/s/3tru67sxyzv1eii/L1e_overlay--open_door--cropped.png',
+                location: [45, 150],
+                set_size: [200, 300]
+            }]);
+            this.scene_data = [
+                { type: "web_image", url: "https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png" },
+                { type: "text", location: [0, 128], text: "Opened! Now for the main", font: "20pt Consolas" },
+                { type: 'text', location: [245, 160], text: 'levels.', font: '20pt Consolas' }
+            ];
+        }
+    });
+    const Ltr = new Room('Tutorial_right', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/6o945uqjht5awjy/Ltr.png'
+        }, {
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/cxaemedms4x906q/paper_slip--far_cropped.png',
+            location: [100, 400],
+            set_size: [149, 73]
+        }, { type: 'text', location: [70, 300], text: 'Click the paper on the', font: '20pt Consolas' },
+        { type: 'text', location: [70, 330], text: 'ground for a closeup!', font: '20pt Consolas' }
+    ], {
+        '[0,0,50,HEIGHT]': 'LLevel.update();',
+        '[100,400,249,473]': 'LLevel.update(0,2);'
+    }, {}, function() {}, function() {
+        if (LLevel.fetch_data('seen_paper') == true && this.scene_data.length >= 4) {
+            this.scene_data.pop();
+            this.scene_data.pop();
+            this.scene_data.push({ type: 'text', location: [20, 250], text: 'Good! Go back to the door.', font: '20pt Consolas' });
+        }
+    });
+    const Ltr_paper_closeup = new Room('Tutorial-right_paper-closeup', [{
+            type: 'web_image',
+            url: 'https://dl.dropboxusercontent.com/s/n9iakyp9ihe8p6a/paper_slip--closeup.png'
+        }, { type: 'text', location: [40, 200], text: 'Nice! Click anywhere', font: '20pt Consolas' },
+        { type: 'text', location: [40, 230], text: 'to get out.', font: '20pt Consolas' }
+    ], {
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("seen_paper", true);LLevel.update(0,1);'
+    });
+    const LevelTutorial = new Level('Tutorial_Level', new Grid([1, 3], [
+        [Lte, Ltr, Ltr_paper_closeup]
+    ]), pos = [0, 0], { seen_paper: false });
+    //MARK: Level 1 stuff
+    const L1e = new Room('Lv1_entrance', [{
+        type: 'web_image',
+        url: 'https://dl.dropboxusercontent.com/s/cn8tnhptljq2hsa/L1e.png'
+    }, { type: 'text', location: [0, 128], text: 'Level 1' }], {
         '[350,0,400,500]': 'LLevel.update(0,1);LLevel.loaded_room.display();',
         '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel=LevelStart;LLevel.update(0,1);}'
     }, {}, function() {}, function() {
