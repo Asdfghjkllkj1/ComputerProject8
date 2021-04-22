@@ -65,7 +65,6 @@ window.onload = function() {
     //MARK: Start Room stuff
     const start_room = new Room('start_room', [{
             type: 'web_image',
-            location: [0, 0],
             url: 'level_data/LStart/start_room.png'
         },
         { type: 'text', location: [135, 285], text: 'start', },
@@ -186,10 +185,7 @@ window.onload = function() {
     const L1e = new Room('Lv1_entrance', [{
             type: 'web_image',
             url: 'level_data/L1/L1e.png'
-        },
-        { type: 'text', location: [0, 450], text: 'Click near the edges to ', font: '20pt Consolas' },
-        { type: 'text', location: [0, 490], text: 'navigate through rooms!', font: '20pt Consolas' },
-        { type: 'text', location: [0, 128], text: 'Open this door!', font: '20pt Consolas' }
+        }, { type: 'text', location: [0, 128], text: 'Level 1', font: '20pt Consolas' }
     ], {
         '[350,0,400,500]': 'LLevel.update(0,1);LLevel.loaded_room.display();',
         '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel=LevelStart;LLevel.update(0,1);}'
@@ -704,7 +700,7 @@ window.onload = function() {
     }], {
         '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
         '[100,55,250,125]': 'if(this.local_data["open_sign"]==true&&LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_bulletin_key", true);}', //HERE IS WHY UNSHIFT MUST BE USED
-        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "/s/r1olz0k9t9uxizx/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
+        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "level_data/L5/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
         '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}'
     }, { open_sign: false }, function() {}, function() {
         if (LLevel.fetch_data('has_key') == true) {
