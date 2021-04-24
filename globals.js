@@ -239,6 +239,21 @@ function changeHTML(id, new_text) {
  */
 const equals = (list1, list2) => JSON.stringify(list1) === JSON.stringify(list2);
 
+/**
+ * @description  A function that checks whether all items in list are of same type
+ * @function all_same_type
+ * @param {list} arr  Array to check if all values are same type
+ * @returns {bool}  Whether all in arr are all same type
+ */
 function all_same_type(arr) {
     return arr.every((val, i, arr) => typeof val === typeof arr[0]);
+}
+/**
+ * @description  A function that checks whether all items in list are the same
+ * @function all_same
+ * @param {list} arr  Array to check if all values are the same
+ * @returns {bool}  Whether all in arr are all the same
+ */
+function all_same(arr) {
+    return arr.every((val, i, arr) => val === arr[0]);
 }

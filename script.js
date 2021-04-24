@@ -78,7 +78,7 @@ window.onload = function() {
         var curr_time = 0;
         setTimer(function __start_room_timer() { // timer that controls easter egg
             curr_time++;
-            if (curr_time >= 20000 && LLevel.fetch_data('easter_egg') == false) {
+            if (curr_time >= 200000 && LLevel.fetch_data('easter_egg') == false) {
                 alert('You found an easter egg!');
                 stopTimer(__start_room_timer);
             }
@@ -176,17 +176,16 @@ window.onload = function() {
         }, { type: 'text', location: [40, 200], text: 'Nice! Click anywhere', font: '20pt Consolas' },
         { type: 'text', location: [40, 230], text: 'to get out.', font: '20pt Consolas' }
     ], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("seen_paper", true);LLevel.update(0,1);'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("seen_paper", true);LLevel.push_data("completed",true);LLevel.update(0,1);'
     });
     const LevelTutorial = new Level('Tutorial_Level', new Grid([1, 3], [
         [Lte, Ltr, Ltr_paper_closeup]
-    ]), pos = [0, 0], { seen_paper: false });
+    ]), pos = [0, 0], { seen_paper: false, completed: false });
     //MARK: Level 1 stuff
     const L1e = new Room('Lv1_entrance', [{
-            type: 'web_image',
-            url: 'level_data/L1/L1e.png'
-        }, { type: 'text', location: [0, 128], text: 'Level 1', font: '20pt Consolas' }
-    ], {
+        type: 'web_image',
+        url: 'level_data/L1/L1e.png'
+    }, { type: 'text', location: [0, 128], text: 'Level 1', font: '20pt Consolas' }], {
         '[350,0,400,500]': 'LLevel.update(0,1);LLevel.loaded_room.display();',
         '[50,155,240,400]': 'if (LLevel.fetch_data("completed")==true){LLevel=LevelStart;LLevel.update(0,1);}'
     }, {}, function() {}, function() {
@@ -278,11 +277,11 @@ window.onload = function() {
     const L2e = new Room('Lv2_entrance', [{
         type: 'web_image',
         url: 'level_data/L2/L2e.png'
-    }], {
+    }, { type: 'text', location: [0, 128], text: 'Level 2', font: '20pt Consolas' }], {
         '[350,0,400,500]': 'LLevel.update(0,1);',
         '[240,210,390,310]': 'LLevel.update(1,0);',
         '[0,0,50,HEIGHT]': 'LLevel.update(0,2);',
-        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){LLevel=LevelStart; Level.update(0,1);LLevel.loaded_room.display();}'
+        '[40,160,225,400]': 'if(LLevel.fetch_data("door_keycode")==true&&LLevel.fetch_data("has_key")==true){LLevel.push_data("completed",true);LLevel=LevelStart; LLevel.update(0,1);LLevel.loaded_room.display();}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("door_keycode") && LLevel.fetch_data("has_key")) {
             this.linked_overlay = L2e_open_door;
@@ -419,18 +418,18 @@ window.onload = function() {
     const Level2 = new Level('L2', new Grid([2, 4], [
         [L2e, L2r, L2l, undefined],
         [L2e_combo_closeup, L2l_safe_closeup, L2l_safe_inside, L2l_paper_closeup]
-    ]), pos = [0, 0], { open_safe: false, door_keycode: false, has_key: false });
+    ]), pos = [0, 0], { open_safe: false, door_keycode: false, has_key: false, completed: false });
     //MARK: Level 3 stuff
     const L3e = new Room('Lv3_entrance', [{
         type: 'web_image',
         url: 'level_data/L3/L3e.png'
-    }], {
+    }, { type: 'text', location: [0, 145], text: 'Level 3', font: '20pt Consolas' }], {
         '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("wood_door_open")==false){LLevel.update(0,2);}else{LLevel.update(1,2);}',
         '[0,0,50,HEIGHT]': 'LLevel.update(0,1);',
         '[250,100,395,275]': 'if(LLevel.fetch_data("l3e_safe")==false){LLevel.update(2,2);}else{LLevel.update(2,0);}',
         '[250,345,370,400]': 'LLevel.update(4,0);',
         '[25,35,235,120]': 'LLevel.update(3,0);',
-        '[30,160,230,400]': 'if(LLevel.fetch_data("has_key")==true&&LLevel.fetch_data("door_keycode")==true){LLevel=LevelStart;LLevel.update(0,1);}'
+        '[30,160,230,400]': 'if(LLevel.fetch_data("has_key")==true&&LLevel.fetch_data("door_keycode")==true){LLevel.push_data("completed",true);LLevel=LevelStart;LLevel.update(0,1);}'
     }, {}, function() {}, function() {
         if (LLevel.fetch_data("door_keycode") == true && LLevel.fetch_data("has_key") == true) {
             this.linked_overlay = L3e_open_door;
@@ -682,26 +681,26 @@ window.onload = function() {
         [L3e_safe_inside, L3r_safe_closeup, L3e_safe_closeup],
         [L3e_combo_closeup, L3l_safe_inside, L3l_safe_closeup],
         [L3e_paper_closeup, L3r_paper_closeup, L3e_safe_paper_closeup]
-    ]), pos = [0, 0], { wood_door_open: false, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false });
+    ]), pos = [0, 0], { wood_door_open: false, door_keycode: false, has_key: false, has_battery: false, l3r_safe: false, l3e_safe: false, l3l_safe: false, completed: false });
     //MARK: Level 4 stuff
     const L4e = new Room('Lv4_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/3f668e244b2c250c27b96f41d8494c07'
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("completed",true);LLevel=LevelStart; LLevel.update();'
     });
     const Level4 = new Level('L4', new Grid([1, 1], [
         [L4e]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], { completed: false });
     //MARK: Level 5 stuff
     const L5e = new Room('Lv5_entrance', [{ //FOR DOOR: MUST USE UNSHIFT INSTEAD OF PUSH BECAUSE OF KEY CLICK DETECTION
         type: 'web_image',
         url: 'level_data/L5/L5e.png'
-    }], {
+    }, { type: 'text', location: [240, 190], text: 'Level 5', font: '20pt Consolas' }], {
         '[350,0,WIDTH,HEIGHT]': 'if(LLevel.fetch_data("bulletin")==true){LLevel.update(0,1);}else{LLevel.update(2,0);}',
         '[100,55,250,125]': 'if(this.local_data["open_sign"]==true&&LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.pop();LLevel.push_data("has_bulletin_key", true);}', //HERE IS WHY UNSHIFT MUST BE USED
-        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "level_data/L5/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "/s/tmb2nk1sibjoaex/key--cropped.png", location: [100,55], set_size: [150,70]})}',
-        '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel = LevelStart;LLevel.update(0,1);}'
+        '[40,20,320,130]': 'LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image",url: "level_data/L5/L5e_overlay--open_sign.png",set_size: [400, 144]});this.local_data["open_sign"]=true;if(LLevel.fetch_data("has_bulletin_key")==false){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "level_data/global_data/key--cropped.png", location: [100,55], set_size: [150,70]})}',
+        '[30,153,230,454]': 'if(LLevel.fetch_data("has_key")==true){LLevel.push_data("completed",true);LLevel = LevelStart;LLevel.update(0,1);}'
     }, { open_sign: false }, function() {}, function() {
         if (LLevel.fetch_data('has_key') == true) {
             LLevel.loaded_room.linked_overlay.scene_data.push({
@@ -710,6 +709,7 @@ window.onload = function() {
                 location: [30, 153],
                 set_size: [200, 301]
             });
+            LLevel.loaded_room.scene_data.pop();
             LLevel.loaded_room.scene_data.push({ type: "text", location: [30, 480], text: "Opened!", font: "20pt Consolas" });
         }
     }, new Room('Lv5_entrance-overlay', [{}]));
@@ -726,7 +726,7 @@ window.onload = function() {
         url: 'level_data/L5/L5r_no-bulletin.png'
     }], {
         '[115,55,315,190]': 'if(LLevel.fetch_data("top_l5r_safe")==false){LLevel.update(2,2);}else{LLevel.update(3,0);}',
-        '[130,200,300,400]': 'if(LLevel.fetch_data("has_bottomsafe_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({ type: "web_image", url: "/s/nte37zh5dl88vkl/L5r_bottom-open--overlay.png", location: [0, 197], set_size: [400, 303] });LLevel.push_data("bottom_l5r_safe",true);LLevel.push_data("has_bottomsafe_key", false);}else if(LLevel.fetch_data("bottom_l5r_safe")==true){LLevel.update(1,1);}',
+        '[130,200,300,400]': 'if(LLevel.fetch_data("has_bottomsafe_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({ type: "web_image", url: "level_data/L5/L5r_bottom-open--overlay.png", location: [0, 197], set_size: [400, 303] });LLevel.push_data("bottom_l5r_safe",true);LLevel.push_data("has_bottomsafe_key", false);}else if(LLevel.fetch_data("bottom_l5r_safe")==true){LLevel.update(1,1);}',
         '[0,290,90,400]': 'LLevel.update(3,1);',
         '[335,215,400,295]': 'LLevel.update(3,2);',
         '[350,0,WIDTH,HEIGHT]': 'LLevel.update(0,2);',
@@ -825,7 +825,7 @@ window.onload = function() {
         type: 'web_image',
         url: 'level_data/L5/L5e_sub1.png'
     }], {
-        '[115,200,300,460]': 'if(LLevel.fetch_data("has_lectern_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "/s/92dwogyy16rr26o/L5e_sub1_no-chain--overlay.jpg", location: [0,193], set_size: [400,307]});LLevel.update(4,1);}',
+        '[115,200,300,460]': 'if(LLevel.fetch_data("has_lectern_key")==true){LLevel.loaded_room.linked_overlay.scene_data.push({type: "web_image", url: "level_data/L5/L5e_sub1_no-chain--overlay.jpg", location: [0,193], set_size: [400,307]});LLevel.update(4,1);}',
         '[260,80,360,160]': 'if(LLevel.fetch_data("has_needle")==false){LLevel.update(4,2);}else{LLevel.update(5,0);}',
         '[350,0,WIDTH,HEIGHT]': 'LLevel.update(1,1);'
     }, {}, function() {}, function() {}, new Room('L5entrance-sub1_overlay', [{}]));
@@ -915,37 +915,38 @@ window.onload = function() {
         [L5r_topsafe_inside, L5r_stickynote_left_closeup, L5r_stickynote_right_closeup],
         [L5rrS1_chest_closeup, L5eS1_lectern_closeup, L5eS1_torch_closeup],
         [L5eS1_torch_closeup_no_needle, L5rr_balloons_closeup, L5rr_balloons_closeup_no_red]
-    ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false });
+    ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false, completed: false });
     //MARK: Level 6 stuff
     const L6e = new Room('Lv6_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/3ce76bc733da05177532fbd004dd250d'
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("completed",true);LLevel=LevelStart; LLevel.update();'
     });
     const Level6 = new Level('L6', new Grid([1, 1], [
         [L6e]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], { completed: false });
     //MARK: Level 7 stuff
     const L7e = new Room('Lv7_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/fe193d750c155a8d367b45ee5537b916'
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("completed",true);LLevel=LevelStart; LLevel.update();'
     });
     const Level7 = new Level('L7', new Grid([1, 1], [
         [L7e]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], { completed: false });
     //MARK: Level 8 stuff
     const L8e = new Room('Lv8_entrance', [{
         type: 'web_image',
         url: 'https://codehs.com/uploads/779ee02bf2672c86766750985b3db283'
     }], {
-        '[0,0,WIDTH,HEIGHT]': 'LLevel=LevelStart; LLevel.update();'
+        '[0,0,WIDTH,HEIGHT]': 'LLevel.push_data("completed",true);LLevel=LevelStart; LLevel.update();'
     });
     const Level8 = new Level('L8', new Grid([1, 1], [
         [L8e]
-    ]), pos = [0, 0]);
+    ]), pos = [0, 0], { completed: false });
+    var allLevelsCompletion;
     LLevel = LevelStart;
     //MAIN LOOP
     LLevel.update()
@@ -954,6 +955,7 @@ window.onload = function() {
         LLevel.loaded_room.linked_overlay.display(overlay = true);
     }
     mouseClickMethod(function(e) {
+        allLevelsCompletion = [true, Level1.user_data['completed'], Level2.user_data['completed'], Level3.user_data['completed'], Level4.user_data['completed'], Level5.user_data['completed'], Level6.user_data['completed'], Level7.user_data['completed'], Level8.user_data['completed'], LevelTutorial.user_data['completed']];
         // optional: add code that runs every time a click (not necessarily one to do something) happens
         LLevel.loaded_room.update([e.getX(), e.getY()]);
         LLevel.loaded_room.display();
@@ -963,6 +965,9 @@ window.onload = function() {
         document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
         changeHTML('text', LLevel.name);
         changeHTML('text2', LLevel.pos);
+        if (all_same(allLevelsCompletion)) {
+            alert('You won! You could continue playing by reloading the page and trying everything again!');
+        }
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
