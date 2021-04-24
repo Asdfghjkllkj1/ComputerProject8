@@ -70,7 +70,7 @@ window.onload = function() {
         { type: 'text', location: [135, 285], text: 'start', },
         { type: 'text', location: [110, 425], text: 'credits', },
         { type: 'text', location: [37, 100], text: 'Escape the Room', },
-        { type: 'text', location: [270, 120], text: 'v0.0.06pre-alpha', font: '11pt Consolas' }
+        { type: 'text', location: [270, 120], text: 'v0.0.07pre-alpha', font: '11pt Consolas' }
     ], {
         '[90,225,290,322]': 'if(USER_NAME==undefined){USER_NAME=prompt("What is your name?","User000")};LLevel=LevelTutorial;LLevel.update();',
         '[100,365,270,440]': 'LLevel.update(0,2);'
@@ -948,7 +948,7 @@ window.onload = function() {
     ]), pos = [0, 0], { completed: false });
     var allLevelsCompletion;
     LLevel = LevelStart;
-    //MAIN LOOP
+    //MARK: Main Loop
     LLevel.update()
     LLevel.loaded_room.display();
     if (LLevel.loaded_room.linked_overlay != undefined) {
@@ -965,12 +965,12 @@ window.onload = function() {
         document.getElementById('current_doc').innerHTML = LLevel.loaded_room.name;
         changeHTML('text', LLevel.name);
         changeHTML('text2', LLevel.pos);
-        if (all_same(allLevelsCompletion)) {
-            alert('You won! You could continue playing by reloading the page and trying everything again!');
-        }
     }); // Updates the loaded room on mouse click; displays loaded room if there is a different one being loaded
     mouseMoveMethod(function(e) {
         changeHTML('mouse_pos', `${e.getX()}, ${e.getY()}`); // displays mouse current pos in h3
+        if (all_same(allLevelsCompletion)) {
+            alert('You won! You could continue playing by reloading the page and trying everything again!');
+        }
     }); // mouse pos display; mainly for debug
     //HTML Integration
     if (typeof start === 'function') {
