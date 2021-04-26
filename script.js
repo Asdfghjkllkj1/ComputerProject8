@@ -900,6 +900,14 @@ window.onload = function() {
         [L5rrS1_chest_closeup, L5eS1_lectern_closeup, L5eS1_torch_closeup],
         [L5eS1_torch_closeup_no_needle, L5rr_balloons_closeup, L5rr_balloons_closeup_no_red]
     ]), pos = [0, 0], { has_key: false, has_bulletin_key: false, has_bottomsafe_key: false, has_lectern_key: false, has_needle: false, bulletin: true, top_l5r_safe: false, bottom_l5r_safe: false, bottom_chest: false, popped_balloon: false, completed: false });
+    //MARK: Finish Level
+    const LFe = new Room('LevelFinish_entrance', [{
+        type: 'web_image',
+        url: 'level_data/LFinish/LFe.jfif'
+    }]);
+    const LevelFinish = new Level('LevelFinish', new Grid([1, 1], [
+        [LFe]
+    ]));
     LLevel = LevelStart;
     var allLevelsCompletion;
     //MARK: Main Loop
@@ -921,6 +929,9 @@ window.onload = function() {
         changeHTML('mouse_pos', `mouse pos: (${e.getX()}, ${e.getY()})`); // displays mouse current pos in h3
         if (all_same(allLevelsCompletion)) {
             alert('You won! You could continue playing by reloading the page and trying everything again!');
+            allLevelsCompletion.push(false);
+            LLevel = LevelFinish;
+            LLevel.update();
         }
     }); // mouse pos display; mainly for debug
     //HTML Integration
